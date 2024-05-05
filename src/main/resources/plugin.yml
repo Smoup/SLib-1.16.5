@@ -1,0 +1,5 @@
+name: SLib
+version: '${project.version}'
+main: splug.slib.SLib
+api-version: '1.16'
+authors: [Smoup]
