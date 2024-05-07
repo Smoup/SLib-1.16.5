@@ -17,6 +17,8 @@ public abstract class AbstractConfig<T extends SJavaPlugin> {
     private final Map<String, String> messages = new HashMap<>();
 
     public AbstractConfig(T plugin) {
+        plugin.saveDefaultConfig();
+
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
 
