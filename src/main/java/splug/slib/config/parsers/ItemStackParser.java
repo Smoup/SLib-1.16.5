@@ -20,6 +20,7 @@ public class ItemStackParser {
         handleMaterial(logger, itemStackBuilder, itemSection);
         handleEnchants(logger, itemStackBuilder, itemSection);
         handleItemFlags(logger, itemStackBuilder, itemSection);
+        handleRGB(logger, itemStackBuilder, itemSection);
 
         return itemStackBuilder
                 .lore(itemSection.getStringList("lore"))
@@ -31,7 +32,31 @@ public class ItemStackParser {
                 .build();
     }
 
-    private static void handleMaterial(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+    private static void handleRGB(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+        if (!itemStackBuilder.materialNameContainsString("LEATHER")) return;
+
+        final String rgbCode = itemSection.getString("rgb");
+
+        if (rgbCode == null) return;
+
+        final String[] colors = rgbCode.split(",");
+
+        if (colors.length != 3) {
+            logger.warning(
+                "§cItemParser warning -> rgb is invalid, pls use correct format | rgb: red, green, blue");
+
+            return;
+        }
+
+        final int red = Integer.parseInt(colors[0]);
+        final int green = Integer.parseInt(colors[1]);
+        final int blue = Integer.parseInt(colors[2]);
+
+        itemStackBuilder.colorBuild(red, green, blue);
+    }
+
+    private static void handleMaterial
+            (Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
         final String materialName = itemSection.getString("material");
 
         if (materialName == null) {
@@ -49,7 +74,8 @@ public class ItemStackParser {
         itemStackBuilder.material(material);
     }
 
-    private static void invalidMaterial(Logger logger, ItemStackBuilder itemStackBuilder, String sectionPath) {
+    private static void invalidMaterial
+            (Logger logger, ItemStackBuilder itemStackBuilder, String sectionPath) {
         itemStackBuilder.material(Material.BARRIER);
         logger.warning(
                 "§cItemParser warning -> material is null, it cannot be null | section -> %s"
@@ -57,7 +83,8 @@ public class ItemStackParser {
         );
     }
 
-    private static void handleEnchants(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+    private static void handleEnchants
+            (Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
         final ConfigurationSection enchantsSection = itemSection.getConfigurationSection("enchants");
 
         if (enchantsSection == null) return;
@@ -77,7 +104,8 @@ public class ItemStackParser {
         }
     }
 
-    private static void handleItemFlags(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+    private static void handleItemFlags
+            (Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
         final ConfigurationSection itemFlagsSection = itemSection.getConfigurationSection("item-flags");
 
         if (itemFlagsSection == null) return;

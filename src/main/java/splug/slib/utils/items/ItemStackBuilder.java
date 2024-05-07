@@ -54,6 +54,22 @@ public class ItemStackBuilder {
         return new ItemStackBuilder(itemStack);
     }
 
+    public boolean equalsMaterial(Material material) {
+        return itemStack.getType().equals(material);
+    }
+
+    public boolean equalsMaterial(Material... materials) {
+        for (Material material : materials) {
+            if (itemStack.getType().equals(material)) return true;
+        }
+
+        return false;
+    }
+
+    public boolean materialNameContainsString(String string) {
+        return itemStack.getType().name().toUpperCase().contains(string.toUpperCase());
+    }
+
     @NonNull
     public ItemStackBuilder amount(int amount) {
 
@@ -183,14 +199,18 @@ public class ItemStackBuilder {
     }
 
     @NonNull
-    public ItemStack colorBuild(byte red, byte green, byte blue) {
+    public ItemStackBuilder colorBuild(int red, int green, int blue) {
         //Только для кожаных предметов
+
+        if (!itemStack.getType().name().toUpperCase().contains("LEATHER")) {
+            return this;
+        }
 
         final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) getItemMeta();
         colorItemMeta.setColor(Color.fromRGB(red, green, blue));
         itemStack.setItemMeta(colorItemMeta);
 
-        return itemStack;
+        return this;
     }
 
     @NonNull
