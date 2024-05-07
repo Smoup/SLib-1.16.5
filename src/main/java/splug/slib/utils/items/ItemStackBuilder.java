@@ -2,6 +2,7 @@ package splug.slib.utils.items;
 
 import lombok.Getter;
 import lombok.NonNull;
+import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
@@ -10,6 +11,7 @@ import org.bukkit.inventory.EquipmentSlot;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
+import org.bukkit.inventory.meta.LeatherArmorMeta;
 
 import java.util.List;
 
@@ -178,6 +180,17 @@ public class ItemStackBuilder {
         }
 
         return this;
+    }
+
+    @NonNull
+    public ItemStack colorBuild(byte red, byte green, byte blue) {
+        //Только для кожаных предметов
+
+        final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) getItemMeta();
+        colorItemMeta.setColor(Color.fromRGB(red, green, blue));
+        itemStack.setItemMeta(colorItemMeta);
+
+        return itemStack;
     }
 
     @NonNull

@@ -9,7 +9,9 @@ import org.bukkit.inventory.Inventory;
 import splug.slib.SJavaPlugin;
 
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Map;
+import java.util.Set;
 
 @Getter @Setter
 @SuppressWarnings("unused")
@@ -17,6 +19,7 @@ public abstract class AbstractMenu<T extends SJavaPlugin> {
 
     private final T plugin;
     private final Map<Integer, AbstractMenuButton<?>> buttons = new HashMap<>();
+    private final Set<Integer> editableSlots = new HashSet<>();
     private final String title;
 
     private Inventory inventory;
@@ -33,6 +36,8 @@ public abstract class AbstractMenu<T extends SJavaPlugin> {
     }
 
     public void onClick(InventoryClickEvent event) {
+        if (!editableSlots.contains((event.getSlot()))) event.setCancelled(true);
+
         if (!buttons.containsKey(event.getSlot())) return;
 
         buttons.get(event.getSlot()).onClick(event);
@@ -44,6 +49,10 @@ public abstract class AbstractMenu<T extends SJavaPlugin> {
         }
 
         buttons.put(slot, button);
+    }
+
+    public void addEditableSlot(int slot) {
+        editableSlots.add(slot);
     }
 
     public void openMenu(Player player) {

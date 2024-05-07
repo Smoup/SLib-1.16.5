@@ -18,7 +18,7 @@ public class MenuHandler {
     }
 
     public void handleClick(InventoryClickEvent event) {
-        final Inventory inventory = event.getClickedInventory();
+        final Inventory inventory = event.getWhoClicked().getOpenInventory().getTopInventory();
         if (!menusByInventory.containsKey(inventory)) return;
 
         menusByInventory.get(inventory).onClick(event);
