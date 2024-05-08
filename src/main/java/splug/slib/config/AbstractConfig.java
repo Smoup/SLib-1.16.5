@@ -45,6 +45,8 @@ public abstract class AbstractConfig<T extends SJavaPlugin> {
 
             messages.put(key, messagesGroup.getString(messageKey));
         }
+
+        messages.put("version", plugin.getDescription().getVersion());
     }
 
     protected void logWarning(String logInfo) {

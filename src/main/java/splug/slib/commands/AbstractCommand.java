@@ -20,6 +20,7 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
 
     private final String permission;
     private final HashMap<String, AbstractCommandArgument> arguments = new HashMap<>();
+    private final HashMap<Integer, List<Set<String>>> parameters = new HashMap<>();
     private final T plugin;
 
     @Setter
@@ -98,6 +99,16 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
             tabCompleteList.add(argumentName);
         });
 
+        if (parameters.containsKey(args.length)) {
+            for (Set<String> strings : parameters.get(args.length)) {
+                tabCompleteList.addAll(strings);
+            }
+        }
+
+        return handleArgumetsParameters(sender, args, tabCompleteList);
+    }
+
+    private ArrayList<String> handleArgumetsParameters(CommandSender sender, String[] args, ArrayList<String> tabCompleteList) {
         final var targetArgument = arguments.get(args[0]);
         if (targetArgument == null) return tabCompleteList;
 
