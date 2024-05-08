@@ -3,16 +3,13 @@ package splug.slib.menu;
 import lombok.Getter;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
-import splug.slib.SJavaPlugin;
 
 @Getter
-public abstract class AbstractMenuButton<T extends SJavaPlugin> {
+public abstract class AbstractMenuButton {
 
-    private final T plugin;
     private final ItemStack itemStack;
 
-    public AbstractMenuButton(T plugin, ItemStack itemStack) {
-        this.plugin = plugin;
+    public AbstractMenuButton(ItemStack itemStack) {
         this.itemStack = itemStack;
     }
 

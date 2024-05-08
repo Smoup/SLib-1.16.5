@@ -18,7 +18,7 @@ import java.util.Set;
 public abstract class AbstractMenu<T extends SJavaPlugin> {
 
     private final T plugin;
-    private final Map<Integer, AbstractMenuButton<?>> buttons = new HashMap<>();
+    private final Map<Integer, AbstractMenuButton> buttons = new HashMap<>();
     private final Set<Integer> editableSlots = new HashSet<>();
     private final String title;
 
@@ -43,7 +43,7 @@ public abstract class AbstractMenu<T extends SJavaPlugin> {
         buttons.get(event.getSlot()).onClick(event);
     }
 
-    public void addButton(int slot, AbstractMenuButton<?> button) {
+    public void addButton(int slot, AbstractMenuButton button) {
         if (buttons.containsKey(slot)) {
             logWarning("menu(%s) uses the slot(%d) twice".formatted(getTitle(), getInventory().getSize()));
         }
