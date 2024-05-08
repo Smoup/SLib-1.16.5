@@ -48,6 +48,6 @@ public abstract class AbstractConfig<T extends SJavaPlugin> {
     }
 
     protected void logWarning(String logInfo) {
-        plugin.getLogger().warning(logInfo);
+        plugin.getLogger().warning("§сConfig warning -> %s".formatted(logInfo));
     }
 }
