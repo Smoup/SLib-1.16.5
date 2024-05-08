@@ -8,7 +8,7 @@ import splug.slib.SJavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter
+@Getter @SuppressWarnings("unused")
 public abstract class AbstractConfig<T extends SJavaPlugin> {
 
     private final T plugin;
@@ -45,5 +45,9 @@ public abstract class AbstractConfig<T extends SJavaPlugin> {
 
             messages.put(key, messagesGroup.getString(messageKey));
         }
+    }
+
+    protected void logWarning(String logInfo) {
+        plugin.getLogger().warning(logInfo);
     }
 }
