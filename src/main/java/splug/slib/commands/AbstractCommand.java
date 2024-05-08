@@ -121,9 +121,7 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
         });
 
         if (parameters.containsKey(args.length)) {
-            for (Set<String> strings : parameters.get(args.length)) {
-                tabCompleteList.addAll(strings);
-            }
+            handleParameters(parameters.get(args.length), tabCompleteList);
         }
 
         return handleArgumetsParameters(sender, args, tabCompleteList);
