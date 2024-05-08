@@ -11,12 +11,14 @@ public abstract class AbstractCommandArgument {
 
     private final String name;
     private final String permission;
+    private final int ordinal;
     private final HashMap<Integer, List<Set<String>>> parameters = new HashMap<>();
 
 
-    public AbstractCommandArgument(String name, String parentPerm) {
+    public AbstractCommandArgument(String name, String parentPerm, int ordinal) {
         this.name = name;
         this.permission = "%s.%s".formatted(parentPerm, name);
+        this.ordinal = ordinal;
     }
 
 

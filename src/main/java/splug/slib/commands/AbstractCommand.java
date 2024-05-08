@@ -91,22 +91,23 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
 
         final ArrayList<String> tabCompleteList = new ArrayList<>();
 
-        if (args.length == 1) {
-            arguments.forEach((argumentName, argumentValue) -> {
-                if (sender.hasPermission(argumentValue.getPermission())) tabCompleteList.add(argumentName);
-            });
-        } else {
-            final var targetArgument = arguments.get(args[0]);
-            if (targetArgument == null) return List.of();
+        arguments.forEach((argumentName, argumentValue) -> {
+            if (!sender.hasPermission(argumentValue.getPermission())) return;
+            if (argumentValue.getOrdinal() != args.length) return;
 
-            if (!sender.hasPermission(targetArgument.getPermission())) return List.of();
+            tabCompleteList.add(argumentName);
+        });
 
-            final List<Set<String>> parametersList = targetArgument.getParameters().get(args.length);
+        final var targetArgument = arguments.get(args[0]);
+        if (targetArgument == null) return tabCompleteList;
 
-            if (parametersList == null) return List.of();
+        if (!sender.hasPermission(targetArgument.getPermission())) return tabCompleteList;
 
-            handleParameters(parametersList, tabCompleteList);
-        }
+        final List<Set<String>> parametersList = targetArgument.getParameters().get(args.length);
+
+        if (parametersList == null) return tabCompleteList;
+
+        handleParameters(parametersList, tabCompleteList);
 
         return tabCompleteList;
     }
