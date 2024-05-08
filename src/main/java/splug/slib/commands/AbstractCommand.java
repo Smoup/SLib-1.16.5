@@ -9,10 +9,7 @@ import org.bukkit.command.*;
 import org.bukkit.entity.Player;
 import splug.slib.SJavaPlugin;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 import java.util.stream.IntStream;
 
 @Getter @ToString @SuppressWarnings("unused")
@@ -84,6 +81,30 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
         }
 
         return targetArg.execute(sender, label, args);
+    }
+
+    /**
+     * %players-list% - список онлайн игроков
+     * <p>
+     * %nums% - числа 1..9
+     */
+    public void addParameters(int ordinal, String... strings) {
+        final var paramsList = getParameters().computeIfAbsent(ordinal, k -> List.of(new HashSet<>()));
+
+        paramsList.get(0).addAll(List.of(strings));
+    }
+
+    public void addParameters(int ordinal, Set<String> parameterSet) {
+        final var paramsList = getParameters().computeIfAbsent(ordinal, k -> new ArrayList<>());
+
+        Set<String> general;
+
+        if (paramsList.isEmpty()) {
+            general = new HashSet<>();
+            paramsList.add(general);
+        }
+
+        paramsList.add(parameterSet);
     }
 
 
