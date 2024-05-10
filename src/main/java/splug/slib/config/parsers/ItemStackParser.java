@@ -39,7 +39,7 @@ public class ItemStackParser {
 
         if (rgbCode == null) return;
 
-        final String[] colors = rgbCode.split(",");
+        final String[] colors = rgbCode.split(", ");
 
         if (colors.length != 3) {
             logger.warning(
@@ -48,9 +48,19 @@ public class ItemStackParser {
             return;
         }
 
-        final int red = Integer.parseInt(colors[0]);
-        final int green = Integer.parseInt(colors[1]);
-        final int blue = Integer.parseInt(colors[2]);
+        final int red;
+        final int green;
+        final int blue;
+
+        try {
+            red = Integer.parseInt(colors[0]);
+            green = Integer.parseInt(colors[1]);
+            blue = Integer.parseInt(colors[2]);
+        } catch (NumberFormatException e) {
+            logger.warning("§cItemParser warning -> NumberFormatException | section -> %s"
+                    .formatted(itemSection.getCurrentPath()));
+            return;
+        }
 
         itemStackBuilder.colorBuild(red, green, blue);
     }
