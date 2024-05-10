@@ -1,0 +1,14 @@
+item-shovel:
+    menu-slot: 50
+    material: 'IRON_SHOVEL'
+    display-name: "§f§lЛопата CASPER"
+    enchants:
+      DIG_SPEED: 2
+      DURABILITY: 1
+      LOOT_BONUS_BLOCKS: 2
+
+    tripped-arrow-effects:
+      NIGHT_VISION:
+        long-duration: true
+        second-level: true
+

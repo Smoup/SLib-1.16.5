@@ -8,8 +8,13 @@ import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
 import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.inventory.meta.PotionMeta;
+import org.bukkit.potion.PotionData;
+import org.bukkit.potion.PotionType;
 import splug.slib.utils.items.ItemStackBuilder;
 
+import java.util.HashSet;
+import java.util.Set;
 import java.util.logging.Logger;
 
 @SuppressWarnings("unused") @ToString
@@ -34,7 +39,90 @@ public class ItemStackParser {
                 .customModelData(itemSection.getInt("custom-model-data"))
                 .localizedName(itemSection.getString("localized-name"));
 
-        return handleRGB(logger, itemStackBuilder, itemSection);
+        final ItemStack itemStack = handleRGB(logger, itemStackBuilder, itemSection);
+
+        if (material.equals(Material.TIPPED_ARROW)) {
+            handleTrippedArrow(logger, itemStack, itemSection);
+        }
+
+        return itemStack;
+    }
+
+    private static void handleTrippedArrow(Logger logger, ItemStack itemStack, ConfigurationSection itemSection) {
+        final ConfigurationSection trippedEffects = itemSection.getConfigurationSection("tripped-arrow-effects");
+        if (trippedEffects == null) {
+            logger.warning("§cConfig warning -> tripped-arrow-effects is null, but item is %s | section -> %s"
+                    .formatted(itemStack.getType().name(), itemSection.getCurrentPath()));
+            return;
+        }
+
+        final Set<PotionData> potionDataSet = parsePotionData(logger, trippedEffects);
+
+        final PotionMeta meta = (PotionMeta) itemStack.getItemMeta();
+
+        if (meta == null) return;
+
+        for (PotionData potionData : potionDataSet) {
+            meta.setBasePotionData(potionData);
+        }
+
+        itemStack.setItemMeta(meta);
+    }
+
+    private static Set<PotionData> parsePotionData
+            (Logger logger, ConfigurationSection trippedEffects) {
+        final Set<PotionData> potionDataSet = new HashSet<>();
+
+        for (String potionTypeKey : trippedEffects.getKeys(false)) {
+            final PotionData potionData = parsePotionData(logger, trippedEffects, potionTypeKey);
+
+            if (potionData == null) continue;
+
+            potionDataSet.add(potionData);
+        }
+
+        return potionDataSet;
+    }
+
+    private static PotionData parsePotionData(Logger logger, ConfigurationSection trippedEffects, String potionTypeKey) {
+        final PotionType potionType = parsePotionType(logger, trippedEffects, potionTypeKey);
+
+        if (potionType == null) return null;
+
+        final ConfigurationSection potionTypeSection = trippedEffects.getConfigurationSection(potionTypeKey);
+
+        if (potionTypeSection == null) return null;
+
+        final boolean isUpgraded = potionTypeSection.getBoolean("long-duration", false);
+        final boolean isExtended = potionTypeSection.getBoolean("second-level", false);
+
+        if (isUpgraded && !potionType.isUpgradeable()) {
+            logger.warning(("§cConfig warning -> %s is not long-duration(upgradable)," +
+                    " pls check org.bukkit.potion.PotionType | section -> %s")
+                    .formatted(potionType.name(), trippedEffects.getCurrentPath()));
+            return null;
+        }
+
+        if (isExtended && !potionType.isExtendable()) {
+            logger.warning(("§cConfig warning -> %s is not second-level(extendable)," +
+                    " pls check org.bukkit.potion.PotionType | section -> %s")
+                    .formatted(potionType.name(), trippedEffects.getCurrentPath()));
+            return null;
+        }
+
+        return new PotionData(potionType, isExtended, isUpgraded);
+    }
+
+    private static PotionType parsePotionType(Logger logger, ConfigurationSection trippedEffects, String potionTypeKey) {
+        final PotionType potionType;
+        try {
+            potionType = PotionType.valueOf(potionTypeKey);
+        } catch (IllegalArgumentException e) {
+            logger.warning("§cConfig warning -> %s is IllegalArgument, pls use from org.bukkit.potion.PotionType | section -> %s"
+                    .formatted(potionTypeKey, trippedEffects.getCurrentPath()));
+            return null;
+        }
+        return potionType;
     }
 
     private static ItemStack handleRGB(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
