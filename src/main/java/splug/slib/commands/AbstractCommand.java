@@ -69,7 +69,7 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
 
     public boolean executeArguments(CommandSender sender, String label, String[] args) {
         if (args.length < 1) return false;
-        final var targetArg = arguments.get(args[0]);
+        final var targetArg = parseArgument(args);
 
         if (targetArg == null) return false;
 
@@ -79,6 +79,24 @@ public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandE
         }
 
         return targetArg.execute(sender, label, args);
+    }
+
+    private AbstractCommandArgument parseArgument(String[] args) {
+        for (final String arg : args) {
+            boolean contains = true;
+
+            for (List<Set<String>> value : parameters.values()) {
+                for (Set<String> strings : value) {
+                    contains = strings.contains(arg);
+                }
+            }
+
+            if (!contains) {
+                return arguments.get(arg);
+            }
+        }
+
+        return null;
     }
 
     /**

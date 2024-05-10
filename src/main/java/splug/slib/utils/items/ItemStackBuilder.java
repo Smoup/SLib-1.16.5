@@ -51,7 +51,7 @@ public class ItemStackBuilder {
     }
 
     @NonNull
-    public static ItemStackBuilder empty() {
+    public static ItemStackBuilder air() {
 
         final ItemStack itemStack = new ItemStack(Material.AIR, 1);
         return new ItemStackBuilder(itemStack);
@@ -202,18 +202,22 @@ public class ItemStackBuilder {
     }
 
     @NonNull
-    public ItemStackBuilder colorBuild(int red, int green, int blue) {
+    public ItemStack build(int red, int green, int blue) {
         //Только для кожаных предметов
 
         if (!itemStack.getType().name().toUpperCase().contains("LEATHER")) {
-            return this;
+            return this.build();
         }
 
-        final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) getItemMeta();
+        itemStack.setItemMeta(itemMeta);
+
+        final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+        if (colorItemMeta == null) return this.build();
+
         colorItemMeta.setColor(Color.fromRGB(red, green, blue));
         itemStack.setItemMeta(colorItemMeta);
 
-        return this;
+        return itemStack;
     }
 
     @NonNull

@@ -18,29 +18,31 @@ public class ItemStackParser {
 
     @NonNull
     public static ItemStack parse(@NonNull ConfigurationSection itemSection, Logger logger) {
-        final ItemStackBuilder itemStackBuilder = ItemStackBuilder.empty();
+        final Material material = handleMaterial(logger, itemSection);
 
-        handleMaterial(logger, itemStackBuilder, itemSection);
+        if (material == null) return new ItemStack(Material.ACACIA_BOAT);
+
+        final ItemStackBuilder itemStackBuilder = ItemStackBuilder.of(material);
+
         handleEnchants(logger, itemStackBuilder, itemSection);
         handleItemFlags(logger, itemStackBuilder, itemSection);
-        handleRGB(logger, itemStackBuilder, itemSection);
-
-        return itemStackBuilder
+        itemStackBuilder
                 .lore(itemSection.getStringList("lore"))
                 .displayName(itemSection.getString("display-name"))
                 .amount(itemSection.getInt("amount", 1))
                 .unbreakable(itemSection.getBoolean("unbreakable", false))
                 .customModelData(itemSection.getInt("custom-model-data"))
-                .localizedName(itemSection.getString("localized-name"))
-                .build();
+                .localizedName(itemSection.getString("localized-name"));
+
+        return handleRGB(logger, itemStackBuilder, itemSection);
     }
 
-    private static void handleRGB(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
-        if (!itemStackBuilder.materialNameContainsString("LEATHER")) return;
+    private static ItemStack handleRGB(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+        if (!itemStackBuilder.materialNameContainsString("LEATHER")) return itemStackBuilder.build();
 
         final String rgbCode = itemSection.getString("rgb");
 
-        if (rgbCode == null) return;
+        if (rgbCode == null) return itemStackBuilder.build();
 
         final String[] colors = rgbCode.split(", ");
 
@@ -48,7 +50,7 @@ public class ItemStackParser {
             logger.warning(
                 "§cItemParser warning -> rgb is invalid, pls use correct format | rgb: red, green, blue");
 
-            return;
+            return itemStackBuilder.build();
         }
 
         final int red;
@@ -62,34 +64,33 @@ public class ItemStackParser {
         } catch (NumberFormatException e) {
             logger.warning("§cItemParser warning -> NumberFormatException | section -> %s"
                     .formatted(itemSection.getCurrentPath()));
-            return;
+            return itemStackBuilder.build();
         }
 
-        itemStackBuilder.colorBuild(red, green, blue);
+        return itemStackBuilder.build(red, green, blue);
     }
 
-    private static void handleMaterial
-            (Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+    private static Material handleMaterial
+            (Logger logger, ConfigurationSection itemSection) {
         final String materialName = itemSection.getString("material");
 
         if (materialName == null) {
-            invalidMaterial(logger, itemStackBuilder, itemSection.getCurrentPath());
-            return;
+            invalidMaterial(logger, itemSection.getCurrentPath());
+            return null;
         }
 
         final Material material = Material.getMaterial(materialName);
 
         if (material == null) {
-            invalidMaterial(logger, itemStackBuilder, itemSection.getCurrentPath());
-            return;
+            invalidMaterial(logger, itemSection.getCurrentPath());
+            return null;
         }
 
-        itemStackBuilder.material(material);
+        return material;
     }
 
     private static void invalidMaterial
-            (Logger logger, ItemStackBuilder itemStackBuilder, String sectionPath) {
-        itemStackBuilder.material(Material.BARRIER);
+            (Logger logger, String sectionPath) {
         logger.warning(
                 "§cItemParser warning -> material is null, it cannot be null | section -> %s"
                         .formatted(sectionPath)

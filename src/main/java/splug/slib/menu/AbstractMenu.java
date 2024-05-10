@@ -47,7 +47,7 @@ public abstract class AbstractMenu<T extends SJavaPlugin> {
 
     public void addButton(int slot, AbstractMenuButton button) {
         if (buttons.containsKey(slot)) {
-            logWarning("menu(%s) uses the slot(%d) twice".formatted(getTitle(), getInventory().getSize()));
+            logWarning("menu(%s) uses the slot(%d) twice".formatted(getTitle(), slot));
         }
 
         buttons.put(slot, button);
