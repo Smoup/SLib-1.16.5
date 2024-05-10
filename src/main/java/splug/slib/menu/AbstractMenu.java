@@ -1,7 +1,9 @@
 package splug.slib.menu;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.Setter;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -13,8 +15,8 @@ import java.util.HashSet;
 import java.util.Map;
 import java.util.Set;
 
-@Getter @Setter
-@SuppressWarnings("unused")
+@Getter @Setter @ToString
+@SuppressWarnings("unused") @EqualsAndHashCode
 public abstract class AbstractMenu<T extends SJavaPlugin> {
 
     private final T plugin;

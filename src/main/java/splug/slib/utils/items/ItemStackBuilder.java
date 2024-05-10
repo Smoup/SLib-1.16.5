@@ -1,7 +1,9 @@
 package splug.slib.utils.items;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.NonNull;
+import lombok.ToString;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -16,6 +18,7 @@ import org.bukkit.inventory.meta.LeatherArmorMeta;
 import java.util.List;
 
 @Getter @SuppressWarnings("unused")
+@ToString @EqualsAndHashCode
 public class ItemStackBuilder {
 
     private final ItemStack itemStack;

@@ -1,5 +1,6 @@
 package splug.slib.commands;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.command.CommandSender;
@@ -7,6 +8,7 @@ import org.bukkit.command.CommandSender;
 import java.util.*;
 
 @Getter @ToString @SuppressWarnings("unused")
+@EqualsAndHashCode
 public abstract class AbstractCommandArgument {
 
     private final String name;

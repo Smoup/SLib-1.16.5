@@ -6,8 +6,7 @@ import org.bukkit.enchantments.Enchantment;
 
 //Для 1.19.2
 
-@Getter
-@SuppressWarnings("unused")
+@Getter @SuppressWarnings("unused")
 public enum EnchantmentRussianName {
 
     PROTECTION_ENVIRONMENTAL(Enchantment.PROTECTION_ENVIRONMENTAL, "Защита"),

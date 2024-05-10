@@ -1,9 +1,6 @@
 package splug.slib.commands;
 
-import lombok.Getter;
-import lombok.NonNull;
-import lombok.Setter;
-import lombok.ToString;
+import lombok.*;
 import org.bukkit.Bukkit;
 import org.bukkit.command.*;
 import org.bukkit.entity.Player;
@@ -13,6 +10,7 @@ import java.util.*;
 import java.util.stream.IntStream;
 
 @Getter @ToString @SuppressWarnings("unused")
+@EqualsAndHashCode
 public abstract class AbstractCommand<T extends SJavaPlugin> implements CommandExecutor, TabCompleter {
 
     private final String permission;

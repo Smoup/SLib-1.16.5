@@ -1,6 +1,8 @@
 package splug.slib.config;
 
+import lombok.EqualsAndHashCode;
 import lombok.Getter;
+import lombok.ToString;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import splug.slib.SJavaPlugin;
@@ -9,6 +11,7 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Getter @SuppressWarnings("unused")
+@ToString @EqualsAndHashCode
 public abstract class AbstractConfig<T extends SJavaPlugin> {
 
     private final T plugin;

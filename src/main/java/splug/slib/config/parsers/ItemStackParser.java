@@ -1,6 +1,8 @@
 package splug.slib.config.parsers;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
@@ -10,7 +12,8 @@ import splug.slib.utils.items.ItemStackBuilder;
 
 import java.util.logging.Logger;
 
-@SuppressWarnings("unused")
+@SuppressWarnings("unused") @ToString
+@EqualsAndHashCode
 public class ItemStackParser {
 
     @NonNull
