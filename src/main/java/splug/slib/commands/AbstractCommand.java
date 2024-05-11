@@ -2,19 +2,31 @@ package splug.slib.commands;
 
 import lombok.EqualsAndHashCode;
 import lombok.Getter;
-import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 
-@Getter @Setter
-@EqualsAndHashCode(callSuper = true) @ToString @SuppressWarnings("unused")
+@Getter @SuppressWarnings("unused")
+@EqualsAndHashCode(callSuper = true) @ToString
 public abstract class AbstractCommand extends AbstractParameter implements CommandExecutor, TabCompleter {
+
+    private final CommandUsageExecutor cmdUsage;
 
     public AbstractCommand(String command, JavaPlugin plugin) {
         super(0);
+
+        this.cmdUsage = new CommandUsageExecutor(plugin.getName());
+
+        registerCommand(command, plugin);
+    }
+
+    public AbstractCommand(String command, JavaPlugin plugin, String pluginName) {
+        super(0);
+
+        this.cmdUsage = new CommandUsageExecutor(pluginName);
+
         registerCommand(command, plugin);
     }
 
