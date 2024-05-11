@@ -8,7 +8,7 @@ import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
-import splug.slib.SJavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.HashSet;
@@ -17,7 +17,7 @@ import java.util.Set;
 
 @Getter @Setter @ToString
 @SuppressWarnings("unused") @EqualsAndHashCode
-public abstract class AbstractMenu<T extends SJavaPlugin> {
+public abstract class AbstractMenu<T extends JavaPlugin> {
 
     private final T plugin;
     private final Map<Integer, AbstractMenuButton> buttons = new HashMap<>();
