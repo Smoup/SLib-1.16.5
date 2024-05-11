@@ -5,14 +5,14 @@ import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
-import splug.slib.SJavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.HashMap;
 import java.util.Map;
 
 @Getter @SuppressWarnings("unused")
 @ToString @EqualsAndHashCode
-public abstract class AbstractConfig<T extends SJavaPlugin> {
+public abstract class AbstractConfig<T extends JavaPlugin> {
 
     private final T plugin;
     private final FileConfiguration cfg;

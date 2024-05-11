@@ -5,11 +5,11 @@ import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
-import splug.slib.SJavaPlugin;
+import org.bukkit.plugin.java.JavaPlugin;
 
 @Getter @ToString
 @EqualsAndHashCode
-public abstract class AbstractListener<T extends SJavaPlugin> implements Listener {
+public abstract class AbstractListener<T extends JavaPlugin> implements Listener {
     private final T plugin;
 
     public AbstractListener(T plugin) {
