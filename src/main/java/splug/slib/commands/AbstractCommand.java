@@ -16,7 +16,7 @@ public abstract class AbstractCommand extends AbstractParameter implements Comma
     private final CommandUsageExecutor cmdUsage;
 
     public AbstractCommand(String command, JavaPlugin plugin) {
-        super(0);
+        super(1);
 
         this.cmdUsage = new CommandUsageExecutor(plugin.getName());
 
@@ -24,7 +24,7 @@ public abstract class AbstractCommand extends AbstractParameter implements Comma
     }
 
     public AbstractCommand(String command, JavaPlugin plugin, String pluginName) {
-        super(0);
+        super(1);
 
         this.cmdUsage = new CommandUsageExecutor(pluginName);
 
