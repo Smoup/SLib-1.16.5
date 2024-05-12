@@ -7,6 +7,7 @@ import lombok.Setter;
 import lombok.ToString;
 import org.bukkit.command.CommandSender;
 import splug.slib.commands.args.Argument;
+import splug.slib.commands.usage.CommandUsageExecutor;
 
 import java.util.*;
 
@@ -18,14 +19,23 @@ public abstract class AbstractParameter {
 
     private final Set<Argument> arguments = new HashSet<>();
     private final Set<AbstractParameter> parameters = new HashSet<>();
+    private final CommandUsageExecutor cmdUsage;
 
-    public AbstractParameter(int ordinal) {
+    public AbstractParameter(int ordinal, String pluginName) {
         this.ordinal = ordinal;
+        this.cmdUsage = new CommandUsageExecutor(pluginName);
     }
 
-    public AbstractParameter(int ordinal, String permission) {
+    public AbstractParameter(int ordinal, String permission, String pluginName) {
         this.ordinal = ordinal;
         this.permission = permission;
+        this.cmdUsage = new CommandUsageExecutor(pluginName);
+    }
+
+    public AbstractParameter(int ordinal, String permission, CommandUsageExecutor cmdUsage) {
+        this.ordinal = ordinal;
+        this.permission = permission;
+        this.cmdUsage = cmdUsage;
     }
 
     protected final void executeParameter(CommandSender sender, String[] args) {
@@ -86,6 +96,9 @@ public abstract class AbstractParameter {
     }
 
     public final boolean isTarget(CommandSender sender, String[] args) {
+        if (args.length == 0 && ordinal == 0) return true;
+        if (args.length < ordinal) return false;
+
         final String targetArg = args[ordinal - 1];
 
         for (final Argument argument : arguments) {
