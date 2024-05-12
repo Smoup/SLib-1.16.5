@@ -21,7 +21,7 @@ public abstract class AbstractParameter {
     private final Set<AbstractParameter> parameters = new HashSet<>();
     private final CommandUsageExecutor cmdUsage;
 
-    public AbstractParameter(int ordinal, String pluginName) {
+    protected AbstractParameter(int ordinal, String pluginName) {
         this.ordinal = ordinal;
         this.cmdUsage = new CommandUsageExecutor(pluginName);
     }
