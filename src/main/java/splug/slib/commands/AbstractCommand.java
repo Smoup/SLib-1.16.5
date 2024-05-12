@@ -5,6 +5,7 @@ import lombok.Getter;
 import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.usage.CommandUsageExecutor;
 
 import java.util.List;
 

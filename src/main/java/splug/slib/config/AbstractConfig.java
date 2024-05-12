@@ -16,6 +16,7 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
     private final T plugin;
     private final FileConfiguration cfg;
+    private final String pluginName;
 
     private final Map<String, String> messages = new HashMap<>();
 
@@ -24,6 +25,17 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
         this.plugin = plugin;
         this.cfg = plugin.getConfig();
+        this.pluginName = plugin.getName();
+
+        loadMessages();
+    }
+
+    public AbstractConfig(T plugin, String pluginName) {
+        plugin.saveDefaultConfig();
+
+        this.plugin = plugin;
+        this.cfg = plugin.getConfig();
+        this.pluginName = pluginName;
 
         loadMessages();
     }
@@ -44,9 +56,13 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
         if (messagesGroup == null) return;
 
         for (String messageKey : messagesGroup.getKeys(false)) {
-            String key = groupName + "." + messageKey;
+            final String key = groupName + "." + messageKey;
+            final String message = messagesGroup.getString(messageKey);
+            final String pluginFormat = "§8[§6%s§8]".formatted(pluginName);
 
-            messages.put(key, messagesGroup.getString(messageKey));
+            if (message == null) continue;
+
+            messages.put(key, message.replace("%plugin%", pluginFormat));
         }
 
         messages.put("version", plugin.getDescription().getVersion());

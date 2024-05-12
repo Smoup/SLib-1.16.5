@@ -4,7 +4,7 @@ import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.enchantments.Enchantment;
 
-//Для 1.19.2
+//Для 1.16.5
 
 @Getter @SuppressWarnings("unused")
 public enum EnchantmentRussianName {

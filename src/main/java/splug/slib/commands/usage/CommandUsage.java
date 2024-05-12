@@ -1,4 +1,4 @@
-package splug.slib.commands;
+package splug.slib.commands.usage;
 
 import com.google.common.collect.Lists;
 
