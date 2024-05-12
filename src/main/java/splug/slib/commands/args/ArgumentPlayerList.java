@@ -7,6 +7,6 @@ import java.util.Set;
 @ToString @SuppressWarnings("unused")
 public class ArgumentPlayerList extends Argument {
     public ArgumentPlayerList(String permission) {
-        super(permission + "player-list", (Set<String>) null);
+        super(permission + ".player-list", (Set<String>) null);
     }
 }

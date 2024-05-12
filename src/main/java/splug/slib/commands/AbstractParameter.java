@@ -9,7 +9,10 @@ import org.bukkit.command.CommandSender;
 import splug.slib.commands.args.Argument;
 import splug.slib.commands.usage.CommandUsageExecutor;
 
-import java.util.*;
+import java.util.Collections;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Set;
 
 @Getter @Setter
 @EqualsAndHashCode @ToString @SuppressWarnings("unused")
@@ -125,4 +128,62 @@ public abstract class AbstractParameter {
     public final void addParameter(AbstractParameter parameter) {
         parameters.add(parameter);
     }
+
+
+////DEBUG
+//    public final boolean isTarget(CommandSender sender, String[] args) {
+//        if (args.length == 0 && ordinal == 0) {
+//            info("1 -> true args | ordinal == 0");
+//            cut();
+//            return true;
+//        }
+//        if (args.length < ordinal) {
+//            info("2 -> false length=%s ordinal=%s".formatted(args.length, ordinal));
+//            cut();
+//            return false;
+//        }
+//
+//        final String targetArg = args[ordinal - 1];
+//
+//        for (final Argument argument : arguments) {
+//            if (!sender.hasPermission(argument.getPermission())) {
+//                info("3 -> continue no perm %s".formatted(argument.getParams().toString()));
+//                cut();
+//                continue;
+//            }
+//
+//            if (targetArg.isEmpty()) {
+//                info("4 -> true %s".formatted("targetArg is empty"));
+//                cut();
+//                return true;
+//            }
+//
+//            if (argument.getParams() == null || argument.getParams().contains(targetArg)) {
+//                info("5 -> true nullParams=%s containsTarget=%s(target=%s)".formatted(argument.getParams() == null, (argument.getParams() != null) && argument.getParams().contains(targetArg), targetArg));
+//                info("5 -> %s".formatted(argument.toString()));
+//                cut();
+//                return true;
+//            } else {
+//                for (String param : argument.getParams()) {
+//                    if (param.startsWith(targetArg)) {
+//                        info("6 -> true %s".formatted("param.startsWith(targetArg)"));
+//                        cut();
+//                        return true;
+//                    }
+//                }
+//            }
+//        }
+//
+//        info("7 -> false %s".formatted("END"));
+//        cut();
+//        return false;
+//    }
+//
+//    private void info(Object o) {
+//        SLib.getInstance().getLogger().info(String.valueOf(o));
+//    }
+//
+//    private void cut() {
+//        SLib.getInstance().getLogger().info("--------------------------------------------------");
+//    }
 }
