@@ -1,13 +1,10 @@
 package splug.slib.menu;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.ItemStack;
 
-@Getter @ToString
-@EqualsAndHashCode
+@Data
 public abstract class AbstractMenuButton {
 
     private final ItemStack itemStack;

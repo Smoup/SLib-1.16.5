@@ -1,14 +1,11 @@
 package splug.slib.listeners;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 import org.bukkit.event.Listener;
 import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.java.JavaPlugin;
 
-@Getter @ToString
-@EqualsAndHashCode
+@Data
 public abstract class AbstractListener<T extends JavaPlugin> implements Listener {
     private final T plugin;
 

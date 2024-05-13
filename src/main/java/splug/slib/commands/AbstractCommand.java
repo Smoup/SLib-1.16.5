@@ -42,8 +42,6 @@ public abstract class AbstractCommand extends AbstractParameter implements Comma
         return true;
     }
 
-    protected abstract void execute(CommandSender sender, String[] args);
-
     @Override
     public final List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return handleComplete(sender, args);

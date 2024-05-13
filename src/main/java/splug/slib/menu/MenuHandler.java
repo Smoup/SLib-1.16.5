@@ -1,15 +1,13 @@
 package splug.slib.menu;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
+import lombok.Data;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 
 import java.util.HashMap;
 import java.util.Map;
 
-@SuppressWarnings("unused")
-@ToString @EqualsAndHashCode
+@Data @SuppressWarnings("unused")
 public class MenuHandler {
 
     private final Map<Inventory, AbstractMenu<?>> menusByInventory = new HashMap<>();

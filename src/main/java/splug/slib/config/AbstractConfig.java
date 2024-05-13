@@ -73,6 +73,6 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
     }
 
     public String getMsgByKey(String key) {
-        return messages.get(key);
+        return messages.get(key) != null ? messages.get(key) : "null message";
     }
 }

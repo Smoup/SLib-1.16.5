@@ -1,14 +1,11 @@
 package splug.slib.commands.args;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
+import lombok.Data;
 import lombok.RequiredArgsConstructor;
-import lombok.ToString;
 
 import java.util.Set;
 
-@Getter @RequiredArgsConstructor
-@EqualsAndHashCode @ToString @SuppressWarnings("unused")
+@Data @RequiredArgsConstructor @SuppressWarnings("unused")
 public class Argument {
     private final String permission;
     private final Set<String> params;

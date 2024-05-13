@@ -19,7 +19,7 @@ public class CommandUsageExecutor {
         \n
     %commands%
         \n
-    §7§m%defises%---------------%defises%
+    §7§m--------------------------%fix%--------------------------
     """;
 
     private final List<CommandUsage> commands = Lists.newArrayList();
@@ -37,6 +37,7 @@ public class CommandUsageExecutor {
 
         usageMessage = usageMessage.replace("%plugin-name%", pluginName);
         usageMessage = usageMessage.replace("%defises%", sBuilder.toString());
+        usageMessage = usageMessage.replace("%fix%", (pluginName.length() % 2) == 0 ? "" : "-");
     }
 
     public void version(String version) {

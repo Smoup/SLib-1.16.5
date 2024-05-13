@@ -9,6 +9,7 @@ public record MySQLAuthData(
         String port,
         String username,
         String password,
-        String database
+        String database,
+        int poolSize
 ) {
 }
