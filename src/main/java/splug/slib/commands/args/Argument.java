@@ -11,7 +11,7 @@ public class Argument {
     private final Set<String> params;
 
     public Argument(String permission, String... params) {
-        this.permission = permission;
+        this.permission = permission + ".tab-complete";
         this.params = Set.of(params);
     }
 }
