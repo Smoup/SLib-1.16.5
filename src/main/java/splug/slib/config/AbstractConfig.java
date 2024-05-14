@@ -72,6 +72,11 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
         plugin.getLogger().warning("§сConfig warning -> %s".formatted(logInfo));
     }
 
+    protected void logWarning(String logInfo, ConfigurationSection section) {
+        plugin.getLogger().warning("§сConfig warning -> %s | section -> %s"
+                .formatted(logInfo, section.getCurrentPath()));
+    }
+
     public String getMsgByKey(String key) {
         return messages.get(key) != null ? messages.get(key) : "null message";
     }
