@@ -2,6 +2,15 @@ item-shovel:
     menu-slot: 50
     material: 'IRON_SHOVEL'
     display-name: "§f§lЛопата CASPER"
+    potion-effects:
+      INCREASE_DAMAGE:
+        duration: 60 #секунды
+        amplifier: 3 #уровень эффекта
+        ambient: true #default - true
+        particles: true #default - true
+
+
+
     enchants:
       DIG_SPEED: 2
       DURABILITY: 1

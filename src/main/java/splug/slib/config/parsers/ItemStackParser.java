@@ -29,15 +29,17 @@ public class ItemStackParser {
 
         final ItemStackBuilder itemStackBuilder = ItemStackBuilder.of(material);
 
+
         handleEnchants(logger, itemStackBuilder, itemSection);
         handleItemFlags(logger, itemStackBuilder, itemSection);
+
         itemStackBuilder
-                .lore(itemSection.getStringList("lore"))
-                .displayName(itemSection.getString("display-name"))
-                .amount(itemSection.getInt("amount", 1))
-                .unbreakable(itemSection.getBoolean("unbreakable", false))
-                .customModelData(itemSection.getInt("custom-model-data"))
-                .localizedName(itemSection.getString("localized-name"));
+            .lore(itemSection.getStringList("lore"))
+            .displayName(itemSection.getString("display-name"))
+            .amount(itemSection.getInt("amount", 1))
+            .unbreakable(itemSection.getBoolean("unbreakable", false))
+            .customModelData(itemSection.getInt("custom-model-data"))
+            .localizedName(itemSection.getString("localized-name"));
 
         final ItemStack itemStack = handleRGB(logger, itemStackBuilder, itemSection);
 
@@ -51,8 +53,9 @@ public class ItemStackParser {
     private static void handleTrippedArrow(Logger logger, ItemStack itemStack, ConfigurationSection itemSection) {
         final ConfigurationSection trippedEffects = itemSection.getConfigurationSection("tripped-arrow-effects");
         if (trippedEffects == null) {
-            logger.warning("§cConfig warning -> tripped-arrow-effects is null, but item is %s | section -> %s"
-                    .formatted(itemStack.getType().name(), itemSection.getCurrentPath()));
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНе обнаружена секция конфига" +
+                    " §6tripped-arrow-effects §f| Стрела не будет иметь эффектов | путь: %s")
+                    .formatted(itemSection.getCurrentPath()));
             return;
         }
 
@@ -97,16 +100,18 @@ public class ItemStackParser {
         final boolean isExtended = potionTypeSection.getBoolean("second-level", false);
 
         if (isUpgraded && !potionType.isUpgradeable()) {
-            logger.warning(("§cConfig warning -> %s is not long-duration(upgradable)," +
-                    " pls check org.bukkit.potion.PotionType | section -> %s")
-                    .formatted(potionType.name(), trippedEffects.getCurrentPath()));
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cЭффект стрелы §6%s §cне может иметь более" +
+                    " высокую длительность §f| Используйте значение §6slong-duration §fна §6false §f|" +
+                    " Проверьте org.bukkit.potion.PotionType | путь: %s")
+                    .formatted(potionType.name(), potionTypeSection.getCurrentPath()));
             return null;
         }
 
         if (isExtended && !potionType.isExtendable()) {
-            logger.warning(("§cConfig warning -> %s is not second-level(extendable)," +
-                    " pls check org.bukkit.potion.PotionType | section -> %s")
-                    .formatted(potionType.name(), trippedEffects.getCurrentPath()));
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cЭффект стрелы §6%s §cне может быть улучшен до §bII §cуровня  §f|" +
+                    " Используйте значение §6second-level §fна §6false §f|" +
+                    " Проверьте org.bukkit.potion.PotionType | путь: %s")
+                    .formatted(potionType.name(), potionTypeSection.getCurrentPath()));
             return null;
         }
 
@@ -118,14 +123,16 @@ public class ItemStackParser {
         try {
             potionType = PotionType.valueOf(potionTypeKey);
         } catch (IllegalArgumentException e) {
-            logger.warning("§cConfig warning -> %s is IllegalArgument, pls use from org.bukkit.potion.PotionType | section -> %s"
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНеизвестный тип эффекта §6%s §f|" +
+                    " Используйте эффекты из org.bukkit.potion.PotionType | путь: %s")
                     .formatted(potionTypeKey, trippedEffects.getCurrentPath()));
             return null;
         }
         return potionType;
     }
 
-    private static ItemStack handleRGB(Logger logger, ItemStackBuilder itemStackBuilder, ConfigurationSection itemSection) {
+    private static ItemStack handleRGB(Logger logger, ItemStackBuilder itemStackBuilder,
+                                       ConfigurationSection itemSection) {
         if (!itemStackBuilder.materialNameContainsString("LEATHER")) return itemStackBuilder.build();
 
         final String rgbCode = itemSection.getString("rgb");
@@ -135,8 +142,9 @@ public class ItemStackParser {
         final String[] colors = rgbCode.split(", ");
 
         if (colors.length != 3) {
-            logger.warning(
-                "§cItemParser warning -> rgb is invalid, pls use correct format | rgb: red, green, blue");
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНеверный формат R§aG§9B §6%s §f|" +
+                    " Используйте формат -> rgb: §cred§f, §agreen§f, §9blue §f| путь: %s")
+                    .formatted(rgbCode, itemSection.getCurrentPath()));
 
             return itemStackBuilder.build();
         }
@@ -150,8 +158,8 @@ public class ItemStackParser {
             green = Integer.parseInt(colors[1]);
             blue = Integer.parseInt(colors[2]);
         } catch (NumberFormatException e) {
-            logger.warning("§cItemParser warning -> NumberFormatException | section -> %s"
-                    .formatted(itemSection.getCurrentPath()));
+            logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cОшибка при обработке числа §6rgb-кода §f|" +
+                    " §6код-ошибки: §f%s §f| путь: %s").formatted(e.getMessage(), itemSection.getCurrentPath()));
             return itemStackBuilder.build();
         }
 
@@ -179,10 +187,8 @@ public class ItemStackParser {
 
     private static void invalidMaterial
             (Logger logger, String sectionPath) {
-        logger.warning(
-                "§cItemParser warning -> material is null, it cannot be null | section -> %s"
-                        .formatted(sectionPath)
-        );
+        logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНекорректный тип material §f|" +
+                " Используйте значение из org.bukkit.Material §f| путь: %s").formatted(sectionPath));
     }
 
     private static void handleEnchants
@@ -195,8 +201,9 @@ public class ItemStackParser {
             final Enchantment enchant = Enchantment.getByName(enchantName);
 
             if (enchant == null) {
-                logger.warning("§cItemParser warning -> enchantment is undefined | section -> %s"
-                        .formatted(enchantsSection.getCurrentPath()));
+                logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНекорректный тип зачарования §6%s §f|" +
+                        " Используйте значение из org.bukkit.enchantments.Enchantment §f| путь: %s")
+                        .formatted(enchantName, enchantsSection.getCurrentPath()));
                 continue;
             }
 
@@ -218,8 +225,9 @@ public class ItemStackParser {
             try {
                 itemFlag = ItemFlag.valueOf(itemFlagName);
             } catch (IllegalArgumentException e) {
-                logger.warning("§cItemParser warning -> itemflag is undefined | section -> %s"
-                        .formatted(itemFlagsSection.getCurrentPath()));
+                logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНекорректный тип itemflag §6%s §f|" +
+                        " Используйте значение из org.bukkit.inventory.ItemFlag §f| путь: %s")
+                        .formatted(itemFlagName, itemFlagsSection.getCurrentPath()));
                 continue;
             }
 
