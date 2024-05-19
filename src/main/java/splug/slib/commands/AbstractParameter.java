@@ -71,13 +71,17 @@ public abstract class AbstractParameter {
 
         if (parameters.isEmpty()) return Collections.emptyList();
 
+        final Set<String> completeList = new HashSet<>();
+
         for (final AbstractParameter parameter : parameters) {
             if (!parameter.isTarget(sender, args)) continue;
 
-            return parameter.handleComplete(sender, args);
+            final List<String> params = parameter.handleComplete(sender, args);
+            if (params == null) return null;
+            completeList.addAll(params);
         }
 
-        return Collections.emptyList();
+        return List.copyOf(completeList);
     }
 
     private List<String> handleLastArgs(CommandSender sender, String[] args) {
