@@ -50,7 +50,7 @@ public class PotionEffectParser {
             return null;
         }
 
-        final int duration = potionSection.getInt("duration");
+        final int duration = potionSection.getInt("duration") * 20;
         if (duration == 0) {
             logger.info(("§f[§6Config§f] [§6PotionEffectParser§f] §cДлительность эффекта §6%s §cравна §b0 §f|" +
                     " Используйте значение больше §b0 §f| путь: %s")
@@ -69,6 +69,6 @@ public class PotionEffectParser {
         final boolean ambient = potionSection.getBoolean("ambient", true);
         final boolean particles = potionSection.getBoolean("particles", true);
 
-        return new PotionEffect(potionEffectType, duration, amplifier, ambient, particles);
+        return new PotionEffect(potionEffectType, duration, amplifier - 1, ambient, particles);
     }
 }

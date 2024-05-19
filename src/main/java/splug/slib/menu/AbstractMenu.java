@@ -43,7 +43,7 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
 
     public void addButton(int slot, AbstractMenuButton button) {
         if (buttons.containsKey(slot)) {
-            logWarning("menu(%s) uses the slot(%d) twice".formatted(getTitle(), slot));
+            logWarning("§cСлот §b%d использован дважды".formatted(slot));
         }
 
         buttons.put(slot, button);
@@ -60,6 +60,6 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     }
 
     public void logWarning(String msg) {
-        getPlugin().getLogger().warning("§cMenu warning -> %s".formatted(msg));
+        getPlugin().getLogger().warning("§f[§6Меню§f] [%s§f] %s".formatted(title, msg));
     }
 }

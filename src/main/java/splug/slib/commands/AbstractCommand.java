@@ -31,7 +31,7 @@ public abstract class AbstractCommand extends AbstractParameter implements Comma
             pluginCMD.setExecutor(this);
         } else {
             setPermission("%s.null-permission".formatted(plugin.getName()));
-            plugin.getLogger().warning("CommandHandler -> pluginCMD(%s) is null, pls register it -> plugin.yml"
+            plugin.getLogger().warning("§f[§6CommandManager§f] §сКоманда §6%s §cне зарегистрирована §f| Зарегистрируйте команду в plugin.yml"
                 .formatted(command));
         }
     }

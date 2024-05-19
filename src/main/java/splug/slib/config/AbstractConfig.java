@@ -69,15 +69,16 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
     }
 
     protected void logWarning(String logInfo) {
-        plugin.getLogger().warning("§сConfig warning -> %s".formatted(logInfo));
+        plugin.getLogger().warning("§f[§6Config§f] §c%s".formatted(logInfo));
     }
 
     protected void logWarning(String logInfo, ConfigurationSection section) {
-        plugin.getLogger().warning("§сConfig warning -> %s | section -> %s"
+        plugin.getLogger().warning("§f[§6Config§f] §c%s §f| путь: %s"
                 .formatted(logInfo, section.getCurrentPath()));
     }
 
     public String getMsgByKey(String key) {
-        return messages.get(key) != null ? messages.get(key) : "null message";
+        return messages.get(key) != null ? messages.get(key)
+                : "§f[§6§f] §8Незарегистрированное в конфиге сообщение | ключ: %s".formatted(key);
     }
 }
