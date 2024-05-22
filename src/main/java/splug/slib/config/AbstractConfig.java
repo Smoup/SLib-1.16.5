@@ -60,40 +60,12 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
         }
     }
 
-    private void loadMessages1() {
-        final ConfigurationSection groupsSection = cfg.getConfigurationSection("messages");
-
-        if (groupsSection == null) return;
-
-        for (final String groupName : groupsSection.getKeys(false)) {
-            parseMessages(groupName, groupsSection);
-        }
+    protected void log(String logInfo) {
+        plugin.getLogger().warning("§f[§6Конфиг§f] §c%s".formatted(logInfo));
     }
 
-    private void parseMessages(String groupName, ConfigurationSection groupsSection) {
-        final ConfigurationSection messagesGroup = groupsSection.getConfigurationSection(groupName);
-
-        if (messagesGroup == null) return;
-
-        for (String messageKey : messagesGroup.getKeys(false)) {
-            final String key = groupName + "." + messageKey;
-            final String message = messagesGroup.getString(messageKey);
-            final String pluginFormat = "§8[§6%s§8]".formatted(pluginName);
-
-            if (message == null) continue;
-
-            messages.put(key, message.replace("%plugin%", pluginFormat));
-        }
-
-        messages.put("version", plugin.getDescription().getVersion());
-    }
-
-    protected void logWarning(String logInfo) {
-        plugin.getLogger().warning("§f[§6Config§f] §c%s".formatted(logInfo));
-    }
-
-    protected void logWarning(String logInfo, ConfigurationSection section) {
-        plugin.getLogger().warning("§f[§6Config§f] §c%s §f| путь: %s"
+    protected void log(String logInfo, ConfigurationSection section) {
+        plugin.getLogger().warning("§f[§6Конфиг§f] §c%s §f| путь: %s"
                 .formatted(logInfo, section.getCurrentPath()));
     }
 
