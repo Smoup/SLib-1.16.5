@@ -1,8 +1,6 @@
 package splug.slib.config;
 
-import lombok.EqualsAndHashCode;
-import lombok.Getter;
-import lombok.ToString;
+import lombok.Data;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -10,8 +8,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import java.util.HashMap;
 import java.util.Map;
 
-@Getter @SuppressWarnings("unused")
-@ToString @EqualsAndHashCode
+@Data @SuppressWarnings("unused")
 public abstract class AbstractConfig<T extends JavaPlugin> {
 
     private final T plugin;
@@ -27,7 +24,7 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
         this.cfg = plugin.getConfig();
         this.pluginName = plugin.getName();
 
-        loadMessages();
+        parseMessages(cfg.getConfigurationSection("messages"));
     }
 
     public AbstractConfig(T plugin, String pluginName) {
@@ -37,20 +34,43 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
         this.cfg = plugin.getConfig();
         this.pluginName = pluginName;
 
-        loadMessages();
+        parseMessages(cfg.getConfigurationSection("messages"));
     }
 
-    private void loadMessages() {
+
+    private void parseMessages(ConfigurationSection messagesSection) {
+        if (messagesSection == null) return;
+
+        String path = messagesSection.getCurrentPath();
+
+        if (path == null) return;
+
+        path = path.replace("messages.", "");
+
+        for (final String component : messagesSection.getKeys(false)) {
+            if (messagesSection.isConfigurationSection(component)) {
+                parseMessages(messagesSection.getConfigurationSection(component));
+            } else {
+                final String message = messagesSection.getString(component);
+                if (message == null) continue;
+
+                final String pluginFormat = "§8[§6%s§8]".formatted(pluginName);
+                messages.put("%s.%s".formatted(path, component), message.replace("%plugin%", pluginFormat));
+            }
+        }
+    }
+
+    private void loadMessages1() {
         final ConfigurationSection groupsSection = cfg.getConfigurationSection("messages");
 
         if (groupsSection == null) return;
 
         for (final String groupName : groupsSection.getKeys(false)) {
-            parseMessagesGroupSection(groupName, groupsSection);
+            parseMessages(groupName, groupsSection);
         }
     }
 
-    private void parseMessagesGroupSection(String groupName, ConfigurationSection groupsSection) {
+    private void parseMessages(String groupName, ConfigurationSection groupsSection) {
         final ConfigurationSection messagesGroup = groupsSection.getConfigurationSection(groupName);
 
         if (messagesGroup == null) return;
