@@ -13,8 +13,8 @@ public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends Ar
 
     private final P plugin;
 
-    private final String permission;
-    private final Set<String> args;
+    private String permission;
+    private Set<String> args;
 
     public AbstractArgumentContent(P plugin, String permission, String... args) {
         this.plugin = plugin;
