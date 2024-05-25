@@ -70,8 +70,12 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
             }
         }
 
-        if (data.isValid(args.length)) {
+        if (data.isValid(args)) {
             return tryExecuteThis(sender, data);
+        } else {
+            if (args.length == ordinal) {
+                sendUsageMSG(sender);
+            }
         }
 
         return true;
