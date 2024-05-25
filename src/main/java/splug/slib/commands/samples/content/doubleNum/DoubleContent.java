@@ -23,11 +23,6 @@ public class DoubleContent<P extends JavaPlugin, T extends DoubleData>
         parseIncorrectMSG(plugin.getName());
     }
 
-    public DoubleContent(P plugin, String permission, String... args) {
-        super(plugin, permission, args);
-        parseIncorrectMSG(plugin.getName());
-    }
-
     public DoubleContent(P plugin, String permission, Set<String> args) {
         super(plugin, permission, args);
         parseIncorrectMSG(plugin.getName());

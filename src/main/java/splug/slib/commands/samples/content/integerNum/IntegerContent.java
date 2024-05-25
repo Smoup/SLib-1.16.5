@@ -22,11 +22,6 @@ public class IntegerContent<P extends JavaPlugin, T extends IntegerData>
         parseIncorrectMSG(plugin.getName());
     }
 
-    public IntegerContent(P plugin, String permission, String... args) {
-        super(plugin, permission, args);
-        parseIncorrectMSG(plugin.getName());
-    }
-
     public IntegerContent(P plugin, String permission, Set<String> args) {
         super(plugin, permission, args);
         parseIncorrectMSG(plugin.getName());
