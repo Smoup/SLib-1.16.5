@@ -8,5 +8,5 @@ import java.util.Set;
 public interface ArgumentContent<T extends ArgumentData> {
     Set<String> getArgs(String s);
     boolean hasPermission(CommandSender sender);
-    void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal);
+    void handleArgumentData(ArgData<T> argData);
 }

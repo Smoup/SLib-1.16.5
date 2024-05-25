@@ -2,10 +2,10 @@ package splug.slib.commands.samples.content.doubleNum;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.HandleArgumentDataException;
 import splug.slib.commands.content.AbstractArgumentContent;
+import splug.slib.commands.content.ArgData;
 
 import java.util.Set;
 
@@ -43,14 +43,15 @@ public class DoubleContent<P extends JavaPlugin, T extends DoubleData>
     }
 
     @Override
-    public void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal) {
+    public void handleArgumentData(ArgData<T> argData) {
+        final String numString = argData.getTargetArg();
         final double number;
         try {
-            number = Double.parseDouble(args[ordinal - 1]);
+            number = Double.parseDouble(numString);
         } catch (NumberFormatException e) {
-            sender.sendMessage(incorrectMSG.formatted(args[ordinal - 1]));
+            argData.sender().sendMessage(incorrectMSG.formatted(numString));
             throw new HandleArgumentDataException();
         }
-        data.setDoubleNumber(number);
+        argData.data().setDoubleNumber(number);
     }
 }

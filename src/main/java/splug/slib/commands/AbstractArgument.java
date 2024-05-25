@@ -3,18 +3,17 @@ package splug.slib.commands;
 import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ArgumentData;
 import splug.slib.commands.args.ExecutableArgument;
 import splug.slib.commands.args.HandleArgumentDataException;
+import splug.slib.commands.content.ArgData;
 import splug.slib.commands.content.ArgumentContent;
 import splug.slib.commands.usage.CommandUsageExecutor;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @SuppressWarnings("unused")
 @Data @AllArgsConstructor(access = AccessLevel.PUBLIC)
@@ -23,7 +22,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
     private final P plugin;
     private final int ordinal;
 
-    private final Set<ArgumentContent<T>> contents = new HashSet<>();
+    private final List<ArgumentContent<T>> contents = new ArrayList<>();
     private final Set<AbstractArgument<P, T>> arguments = new HashSet<>();
 
     private String permission;
@@ -58,8 +57,12 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
 
         boolean isTargetArgument = contents.isEmpty();
 
-        if (!isTargetArgument) {
-            isTargetArgument = isTargetArgument(sender, args, data);
+        try {
+            if (!isTargetArgument) {
+                isTargetArgument = isTargetArgument(sender, args, data);
+            }
+        } catch (HandleArgumentDataException e) {
+            return true;
         }
 
         if (!isTargetArgument) return false;
@@ -82,10 +85,15 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
     }
 
     private boolean isTargetArgument(CommandSender sender, String[] args, T data) {
-        for (final ArgumentContent<T> content : contents) {
+        for (int i = 0; i < contents.size(); i++) {
+            final ArgumentContent<T> content = contents.get(i);
             try {
-                content.handleArgumentData(sender, args, data, ordinal);
-            } catch (HandleArgumentDataException ignored) {
+                content.handleArgumentData(new ArgData<>(sender, args, data, ordinal, (i == contents.size() - 1)));
+            } catch (HandleArgumentDataException e) {
+                if (e.isSendUsage()) {
+                    sendUsageMSG(sender);
+                    throw new HandleArgumentDataException();
+                }
                 continue;
             }
             return true;
@@ -142,5 +150,9 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
         }
 
         return new ArrayList<>(out);
+    }
+
+    private void log(Object o) {
+        Bukkit.getLogger().warning("§f[§6SLib§f] %s".formatted(String.valueOf(o)));
     }
 }

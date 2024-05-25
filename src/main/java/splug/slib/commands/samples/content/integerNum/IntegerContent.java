@@ -2,10 +2,10 @@ package splug.slib.commands.samples.content.integerNum;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
-import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.HandleArgumentDataException;
 import splug.slib.commands.content.AbstractArgumentContent;
+import splug.slib.commands.content.ArgData;
 
 import java.util.Set;
 
@@ -42,14 +42,15 @@ public class IntegerContent<P extends JavaPlugin, T extends IntegerData>
     }
 
     @Override
-    public void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal) {
+    public void handleArgumentData(ArgData<T> argData) {
+        final String numString = argData.getTargetArg();
         final int number;
         try {
-            number = Integer.parseInt(args[ordinal - 1]);
+            number = Integer.parseInt(numString);
         } catch (NumberFormatException e) {
-            sender.sendMessage(incorrectMSG.formatted(args[ordinal - 1]));
+            argData.sender().sendMessage(incorrectMSG.formatted(numString));
             throw new HandleArgumentDataException();
         }
-        data.setIntegerNumber(number);
+        argData.data().setIntegerNumber(number);
     }
 }
