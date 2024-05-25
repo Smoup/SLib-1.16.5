@@ -1,4 +1,4 @@
-package splug.slib.commands.args;
+package splug.slib.commandsOLD.args;
 
 import lombok.Data;
 

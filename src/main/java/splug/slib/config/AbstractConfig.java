@@ -39,6 +39,8 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
 
     private void parseMessages(ConfigurationSection messagesSection) {
+        messages.put("version", plugin.getDescription().getVersion());
+
         if (messagesSection == null) return;
 
         String path = messagesSection.getCurrentPath();
@@ -47,6 +49,8 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
         path = path.replace("messages.", "");
 
+        final String pluginFormat = "§8[§6%s§8]".formatted(pluginName);
+
         for (final String component : messagesSection.getKeys(false)) {
             if (messagesSection.isConfigurationSection(component)) {
                 parseMessages(messagesSection.getConfigurationSection(component));
@@ -54,7 +58,6 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
                 final String message = messagesSection.getString(component);
                 if (message == null) continue;
 
-                final String pluginFormat = "§8[§6%s§8]".formatted(pluginName);
                 messages.put("%s.%s".formatted(path, component), message.replace("%plugin%", pluginFormat));
             }
         }
@@ -71,6 +74,6 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
     public String getMsgByKey(String key) {
         return messages.get(key) != null ? messages.get(key)
-                : "§f[§6§f] §8Незарегистрированное в конфиге сообщение | ключ: %s".formatted(key);
+                : "§f[§6%s§f] §8Незарегистрированное в конфиге сообщение | ключ: %s".formatted(pluginName, key);
     }
 }

@@ -1,23 +1,25 @@
-package splug.slib.commands;
+package splug.slib.commandsOLD;
 
 import com.google.common.collect.Lists;
 import lombok.Data;
 import org.bukkit.command.CommandSender;
-import splug.slib.SLib;
-import splug.slib.commands.args.Argument;
-import splug.slib.commands.usage.CommandUsageExecutor;
+import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commandsOLD.args.Argument;
+import splug.slib.commandsOLD.usage.CommandUsageExecutor;
 
 import java.util.*;
 
 @Data @SuppressWarnings("unused")
-public abstract class AbstractParameter {
+public abstract class AbstractParameter<T extends JavaPlugin> {
+    private T plugin;
+
     private final int ordinal;
     private String permission;
     private boolean isLast = false;
     private final HashMap<Integer, Set<Argument>> lastArgs = new HashMap<>();
 
     private final Set<Argument> arguments = new HashSet<>();
-    private final Set<AbstractParameter> parameters = new HashSet<>();
+    private final Set<AbstractParameter<T>> parameters = new HashSet<>();
     private final CommandUsageExecutor cmdUsage;
 
     protected AbstractParameter(int ordinal, String pluginName) {
@@ -44,7 +46,7 @@ public abstract class AbstractParameter {
                 return;
             }
 
-            for (final AbstractParameter parameter : parameters) {
+            for (final AbstractParameter<T> parameter : parameters) {
                 if (parameter.isTarget(sender, args)) {
                     parameter.executeParameter(sender, args);
                 }
@@ -73,7 +75,7 @@ public abstract class AbstractParameter {
 
         final Set<String> completeList = new HashSet<>();
 
-        for (final AbstractParameter parameter : parameters) {
+        for (final AbstractParameter<?> parameter : parameters) {
             if (!parameter.isTarget(sender, args)) continue;
 
             final List<String> params = parameter.handleComplete(sender, args);
@@ -104,7 +106,7 @@ public abstract class AbstractParameter {
     }
 
     private void info(Object o) {
-        SLib.getInstance().getLogger().info(String.valueOf(o));
+        plugin.getLogger().info(String.valueOf(o));
     }
 
     private List<String> handleCompleteThis(CommandSender sender, String[] args) {
@@ -152,7 +154,7 @@ public abstract class AbstractParameter {
         arguments.add(argument);
     }
 
-    public final void addParameter(AbstractParameter parameter) {
+    public final void addParameter(AbstractParameter<T> parameter) {
         parameters.add(parameter);
     }
 

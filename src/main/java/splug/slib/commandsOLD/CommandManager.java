@@ -1,4 +1,4 @@
-package splug.slib.commands;
+package splug.slib.commandsOLD;
 
 import lombok.*;
 
@@ -7,9 +7,9 @@ import java.util.Set;
 
 @RequiredArgsConstructor @Data @SuppressWarnings("unused")
 public class CommandManager {
-    private final Set<AbstractCommand> commands = new HashSet<>();
+    private final Set<AbstractCommand<?>> commands = new HashSet<>();
 
-    public void register(AbstractCommand command) {
+    public void register(AbstractCommand<?> command) {
         commands.add(command);
     }
 }

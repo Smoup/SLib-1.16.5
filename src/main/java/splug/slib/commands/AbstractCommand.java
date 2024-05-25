@@ -1,49 +1,44 @@
 package splug.slib.commands;
 
-import lombok.EqualsAndHashCode;
-import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.args.AbstractArgument;
+import splug.slib.commands.args.ArgumentData;
+import splug.slib.commands.args.ExecutableArgument;
 
 import java.util.List;
 
-@SuppressWarnings("unused")
-@EqualsAndHashCode(callSuper = true) @ToString
-public abstract class AbstractCommand extends AbstractParameter implements CommandExecutor, TabCompleter {
+public abstract class AbstractCommand<P extends JavaPlugin, T extends ArgumentData>
+        extends AbstractArgument<P, T> implements ExecutableArgument<T>, CommandExecutor, TabCompleter {
 
-    public AbstractCommand(String command, JavaPlugin plugin) {
-        super(0, plugin.getName());
+    public AbstractCommand(P plugin, String command) {
+        super(plugin, 0);
 
-        registerCommand(command, plugin);
+        registerCommand(command);
     }
 
-    public AbstractCommand(String command, JavaPlugin plugin, String pluginName) {
-        super(0, pluginName);
-
-        registerCommand(command, plugin);
-    }
-
-    private void registerCommand(String command, JavaPlugin plugin) {
-        final PluginCommand pluginCMD = plugin.getCommand(command);
+    private void registerCommand(String command) {
+        final PluginCommand pluginCMD = getPlugin().getCommand(command);
 
         if (pluginCMD != null) {
             setPermission(pluginCMD.getPermission());
             pluginCMD.setExecutor(this);
         } else {
-            setPermission("%s.null-permission".formatted(plugin.getName()));
-            plugin.getLogger().warning("§f[§6CommandManager§f] §сКоманда §6%s §cне зарегистрирована §f| Зарегистрируйте команду в plugin.yml"
-                .formatted(command));
+            setPermission("%s.null-permission".formatted(getPlugin().getName()));
+            getPlugin().getLogger().warning("§f[§6CommandManager§f] §сКоманда §6%s §cне зарегистрирована §f| Зарегистрируйте команду в plugin.yml"
+                    .formatted(command));
         }
     }
 
+    protected abstract T getNewData();
+
     @Override
-    public final boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
-        executeParameter(sender, args);
-        return true;
+    public boolean onCommand(CommandSender sender, Command command, String label, String[] args) {
+        return executeArguments(sender, args, getNewData());
     }
 
     @Override
-    public final List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
-        return handleComplete(sender, args);
+    public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
+        return handleTabComplete(sender, args);
     }
 }
