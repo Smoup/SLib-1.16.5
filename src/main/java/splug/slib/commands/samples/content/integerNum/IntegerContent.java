@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.args.HandleArgumentDataException;
 import splug.slib.commands.content.AbstractArgumentContent;
 
 import java.util.Set;
@@ -36,11 +37,6 @@ public class IntegerContent<P extends JavaPlugin, T extends IntegerData>
         parseIncorrectMSG(pluginName);
     }
 
-    public IntegerContent(P plugin, String permission, String pluginName, String... args) {
-        super(plugin, permission, args);
-        parseIncorrectMSG(pluginName);
-    }
-
     public IntegerContent(P plugin, String permission, String pluginName, Set<String> args) {
         super(plugin, permission, args);
         parseIncorrectMSG(pluginName);
@@ -51,19 +47,14 @@ public class IntegerContent<P extends JavaPlugin, T extends IntegerData>
     }
 
     @Override
-    public boolean isCorrect(CommandSender sender, String s) {
-        try {
-            Integer.parseInt(s);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(incorrectMSG.formatted(s));
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal) {
-        final int num = Integer.parseInt(args[ordinal - 1]);
-        data.setIntegerNumber(num);
+        final int number;
+        try {
+            number = Integer.parseInt(args[ordinal - 1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(incorrectMSG.formatted(args[ordinal - 1]));
+            throw new HandleArgumentDataException();
+        }
+        data.setIntegerNumber(number);
     }
 }

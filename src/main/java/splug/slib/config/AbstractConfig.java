@@ -74,6 +74,6 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
 
     public String getMsgByKey(String key) {
         return messages.get(key) != null ? messages.get(key)
-                : "§f[§6%s§f] §8Незарегистрированное в конфиге сообщение | ключ: %s".formatted(pluginName, key);
+                : "§8[§6%s§8] §cНезарегистрированное в конфиге сообщение §f| ключ: %s".formatted(pluginName, key);
     }
 }

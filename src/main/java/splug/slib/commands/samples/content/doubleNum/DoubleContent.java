@@ -4,6 +4,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.args.HandleArgumentDataException;
 import splug.slib.commands.content.AbstractArgumentContent;
 
 import java.util.Set;
@@ -37,11 +38,6 @@ public class DoubleContent<P extends JavaPlugin, T extends DoubleData>
         parseIncorrectMSG(pluginName);
     }
 
-    public DoubleContent(P plugin, String permission, String pluginName, String... args) {
-        super(plugin, permission, args);
-        parseIncorrectMSG(pluginName);
-    }
-
     public DoubleContent(P plugin, String permission, String pluginName, Set<String> args) {
         super(plugin, permission, args);
         parseIncorrectMSG(pluginName);
@@ -52,19 +48,14 @@ public class DoubleContent<P extends JavaPlugin, T extends DoubleData>
     }
 
     @Override
-    public boolean isCorrect(CommandSender sender, String s) {
-        try {
-            Double.parseDouble(s);
-        } catch (NumberFormatException e) {
-            sender.sendMessage(incorrectMSG.formatted(s));
-            return false;
-        }
-        return true;
-    }
-
-    @Override
     public void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal) {
-        final double num =  Double.parseDouble(args[ordinal - 1]);
-        data.setDoubleNumber(num);
+        final double number;
+        try {
+            number = Double.parseDouble(args[ordinal - 1]);
+        } catch (NumberFormatException e) {
+            sender.sendMessage(incorrectMSG.formatted(args[ordinal - 1]));
+            throw new HandleArgumentDataException();
+        }
+        data.setDoubleNumber(number);
     }
 }

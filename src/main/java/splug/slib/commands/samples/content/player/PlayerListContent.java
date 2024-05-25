@@ -32,11 +32,6 @@ public class PlayerListContent<P extends JavaPlugin, T extends PlayerData>
     }
 
     @Override
-    public boolean isCorrect(CommandSender sender, String s) {
-        return true;
-    }
-
-    @Override
     public void handleArgumentData(CommandSender sender, String[] args, T data, int ordinal) {
         final Player player = Bukkit.getPlayerExact(args[ordinal - 1]);
         if (player == null) {

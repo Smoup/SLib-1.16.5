@@ -1,9 +1,13 @@
-package splug.slib.commands.args;
+package splug.slib.commands;
 
+import lombok.AccessLevel;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.args.ArgumentData;
+import splug.slib.commands.args.ExecutableArgument;
+import splug.slib.commands.args.HandleArgumentDataException;
 import splug.slib.commands.content.ArgumentContent;
 import splug.slib.commands.usage.CommandUsageExecutor;
 
@@ -12,7 +16,8 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-@Data @AllArgsConstructor @SuppressWarnings("unused")
+@SuppressWarnings("unused")
+@Data @AllArgsConstructor(access = AccessLevel.PUBLIC)
 public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentData> {
 
     private final P plugin;
@@ -24,13 +29,13 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
     private String permission;
     private final CommandUsageExecutor cmdUsage;
 
-    public AbstractArgument(P plugin, int ordinal) {
+    AbstractArgument(P plugin, int ordinal) {
         this.plugin = plugin;
         this.ordinal = ordinal;
         this.cmdUsage = new CommandUsageExecutor(plugin.getName());
     }
 
-    public AbstractArgument(P plugin, int ordinal, String pluginName) {
+    AbstractArgument(P plugin, int ordinal, String pluginName) {
         this.plugin = plugin;
         this.ordinal = ordinal;
         this.cmdUsage = new CommandUsageExecutor(pluginName);
@@ -69,26 +74,25 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentD
             return tryExecuteThis(sender, data);
         }
 
-        sendUsageMSG(sender);
         return true;
     }
 
     private boolean isTargetArgument(CommandSender sender, String[] args, T data) {
         for (final ArgumentContent<T> content : contents) {
-            if (content.isCorrect(sender, args[ordinal - 1])) {
-                try {
-                    content.handleArgumentData(sender, args, data, ordinal);
-                } catch (HandleArgumentDataException ignored) {
-                    continue;
-                }
-                return true;
+            try {
+                content.handleArgumentData(sender, args, data, ordinal);
+            } catch (HandleArgumentDataException ignored) {
+                continue;
             }
+            return true;
         }
         return false;
     }
 
     @SuppressWarnings("unchecked")
     private boolean tryExecuteThis(CommandSender sender, T data) {
+        if (!sender.hasPermission(getPermission())) return true;
+
         if (this instanceof ExecutableArgument<?>) {
             final ExecutableArgument<T> argument = (ExecutableArgument<T>) this;
             argument.execute(sender, data);

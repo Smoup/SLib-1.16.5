@@ -4,7 +4,6 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.args.AbstractArgument;
 import splug.slib.commands.args.ArgumentData;
 import splug.slib.commands.args.ExecutableArgument;
 
@@ -15,7 +14,13 @@ public abstract class AbstractCommand<P extends JavaPlugin, T extends ArgumentDa
         extends AbstractArgument<P, T> implements ExecutableArgument<T>, CommandExecutor, TabCompleter {
 
     public AbstractCommand(P plugin, String command) {
-        super(plugin, 0);
+        super(plugin, 0, plugin.getName());
+
+        registerCommand(command);
+    }
+
+    public AbstractCommand(P plugin, String command, String pluginName) {
+        super(plugin, 0, pluginName);
 
         registerCommand(command);
     }
@@ -43,5 +48,10 @@ public abstract class AbstractCommand<P extends JavaPlugin, T extends ArgumentDa
     @Override
     public List<String> onTabComplete(CommandSender sender, Command command, String alias, String[] args) {
         return handleTabComplete(sender, args);
+    }
+
+    @Override
+    public void execute(CommandSender sender, T data) {
+        sendUsageMSG(sender);
     }
 }
