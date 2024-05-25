@@ -8,6 +8,7 @@ import splug.slib.commands.content.AbstractArgumentContent;
 
 import java.util.Set;
 
+@SuppressWarnings("unused")
 @ToString @EqualsAndHashCode(callSuper = true)
 public class DoubleContent<P extends JavaPlugin, T extends DoubleData>
         extends AbstractArgumentContent<P, T> {
