@@ -1,5 +1,7 @@
 package splug.slib.commands;
 
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.AbstractArgument;
@@ -8,6 +10,7 @@ import splug.slib.commands.args.ExecutableArgument;
 
 import java.util.List;
 
+@ToString @EqualsAndHashCode(callSuper = true) @SuppressWarnings("unused")
 public abstract class AbstractCommand<P extends JavaPlugin, T extends ArgumentData>
         extends AbstractArgument<P, T> implements ExecutableArgument<T>, CommandExecutor, TabCompleter {
 
