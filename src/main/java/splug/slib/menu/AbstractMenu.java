@@ -43,7 +43,7 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
 
     public void addButton(int slot, AbstractMenuButton button) {
         if (buttons.containsKey(slot)) {
-            log("§cСлот §b%d использован дважды".formatted(slot));
+            log("§cСлот §b%d §cиспользован дважды".formatted(slot));
         }
 
         buttons.put(slot, button);
@@ -52,9 +52,19 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     public void addButtons(AbstractMenuButton button, int... slots) {
         for (final int slot : slots) {
             if (buttons.containsKey(slot)) {
-                log("§cСлот §b%d использован дважды".formatted(slot));
+                log("§cСлот §b%d §cиспользован дважды".formatted(slot));
             }
 
+            buttons.put(slot, button);
+        }
+    }
+
+    public void addButtonForced(int slot, AbstractMenuButton button) {
+        buttons.put(slot, button);
+    }
+
+    public void addButtonsForced(AbstractMenuButton button, int... slots) {
+        for (final int slot : slots) {
             buttons.put(slot, button);
         }
     }
