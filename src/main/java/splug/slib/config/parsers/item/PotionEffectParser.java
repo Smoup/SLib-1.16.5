@@ -1,6 +1,9 @@
-package splug.slib.config.parsers;
+package splug.slib.config.parsers.item;
 
+import lombok.EqualsAndHashCode;
 import lombok.NonNull;
+import lombok.ToString;
+import lombok.experimental.UtilityClass;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.potion.PotionEffect;
 import org.bukkit.potion.PotionEffectType;
@@ -9,7 +12,9 @@ import java.util.HashSet;
 import java.util.Set;
 import java.util.logging.Logger;
 
+@UtilityClass
 @SuppressWarnings("unused")
+@ToString @EqualsAndHashCode
 public class PotionEffectParser {
 
     @NonNull

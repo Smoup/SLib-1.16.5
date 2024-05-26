@@ -1,6 +1,6 @@
 item-shovel:
-    menu-slot: 50
     material: 'IRON_SHOVEL'
+    player-head-texture: "Значение с сайта https://minecraft-heads.com/ For Developers: Value"
     display-name: "§f§lЛопата CASPER"
     potion-effects:
       INCREASE_DAMAGE:
@@ -20,4 +20,12 @@ item-shovel:
       NIGHT_VISION:
         long-duration: true
         second-level: true
+
+    attribute-modifiers:
+      GENERIC_MAX_HEALTH: #org.bukkit.attribute.Attribute
+        modifier: 1.0
+        modify-type: ADD_NUMBER #org.bukkit.attribute.AttributeModifier.Operation
+        equipments-slots: #org.bukkit.inventory.EquipmentSlot если не указать не одного слота то будет работать везде
+          - OFF_HAND
+
 
