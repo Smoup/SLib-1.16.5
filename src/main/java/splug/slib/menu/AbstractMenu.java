@@ -43,10 +43,20 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
 
     public void addButton(int slot, AbstractMenuButton button) {
         if (buttons.containsKey(slot)) {
-            logWarning("§cСлот §b%d использован дважды".formatted(slot));
+            log("§cСлот §b%d использован дважды".formatted(slot));
         }
 
         buttons.put(slot, button);
+    }
+
+    public void addButtons(AbstractMenuButton button, int... slots) {
+        for (final int slot : slots) {
+            if (buttons.containsKey(slot)) {
+                log("§cСлот §b%d использован дважды".formatted(slot));
+            }
+
+            buttons.put(slot, button);
+        }
     }
 
     public void addEditableSlot(int slot) {
@@ -59,7 +69,7 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
         Bukkit.getScheduler().runTaskLater(getPlugin(), () -> player.openInventory(inventory), 1L);
     }
 
-    public void logWarning(String msg) {
+    public void log(String msg) {
         getPlugin().getLogger().warning("§f[§6Меню§f] [%s§f] %s".formatted(title, msg));
     }
 }
