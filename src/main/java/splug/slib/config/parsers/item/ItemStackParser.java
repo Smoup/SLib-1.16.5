@@ -7,6 +7,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import splug.slib.config.parsers.item.exception.ItemStackParserException;
 import splug.slib.utils.items.ItemStackBuilder;
 
 import java.util.logging.Logger;
@@ -20,7 +21,9 @@ public class ItemStackParser {
     public static ItemStack parse(@NonNull ConfigurationSection itemSection, Logger logger) {
         final Material material = handleMaterial(logger, itemSection);
 
-        if (material == null) return new ItemStack(Material.ACACIA_BOAT);
+        if (material == null) {
+            throw new ItemStackParserException();
+        }
 
         final ItemStackBuilder itemStackBuilder = ItemStackBuilder.of(material);
 
