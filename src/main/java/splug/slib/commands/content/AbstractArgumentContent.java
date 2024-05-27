@@ -3,13 +3,13 @@ package splug.slib.commands.content;
 import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.args.ArgumentData;
+import splug.slib.commands.CommandData;
 
 import java.util.Set;
 import java.util.stream.Collectors;
 
 @Data
-public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends ArgumentData> implements ArgumentContent<T> {
+public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends CommandData> implements ArgumentContent<T> {
 
     private final P plugin;
 

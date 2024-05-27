@@ -3,15 +3,15 @@ package splug.slib.commands.samples.content.string;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.args.ArgumentData;
-import splug.slib.commands.args.HandleArgumentDataException;
+import splug.slib.commands.CommandData;
 import splug.slib.commands.content.AbstractArgumentContent;
-import splug.slib.commands.content.ArgData;
+import splug.slib.commands.content.ArgumentHandleData;
+import splug.slib.commands.exception.HandleArgumentDataException;
 
 import java.util.Set;
 
 @ToString @EqualsAndHashCode(callSuper = true) @SuppressWarnings("unused")
-public class StringContent<P extends JavaPlugin, T extends ArgumentData>
+public class StringContent<P extends JavaPlugin, T extends CommandData>
         extends AbstractArgumentContent<P, T> {
 
     public StringContent(P plugin, String permission, String... args) {
@@ -23,9 +23,9 @@ public class StringContent<P extends JavaPlugin, T extends ArgumentData>
     }
 
     @Override
-    public void handleArgumentData(ArgData<T> argData) {
-        if (!getArgs().contains(argData.getTargetArg())) {
-            throw new HandleArgumentDataException(argData.itLast());
+    public void handleArgumentData(ArgumentHandleData<T> handleData) {
+        if (!getArgs().contains(handleData.getTargetArg())) {
+            throw new HandleArgumentDataException(handleData.isLast());
         }
     }
 }

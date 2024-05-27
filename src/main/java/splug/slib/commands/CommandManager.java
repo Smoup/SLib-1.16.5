@@ -14,4 +14,6 @@ public class CommandManager<P extends JavaPlugin> {
     public void register(AbstractCommand<P, ?> command) {
         commands.add(command);
     }
+    public void unRegister(AbstractCommand<P, ?> command) {commands.remove(command);}
+    public void unRegisterAll() {commands.clear();}
 }

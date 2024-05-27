@@ -1,158 +1,157 @@
 package splug.slib.commands;
 
-import lombok.AccessLevel;
-import lombok.AllArgsConstructor;
 import lombok.Data;
-import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.args.ArgumentData;
 import splug.slib.commands.args.ExecutableArgument;
-import splug.slib.commands.args.HandleArgumentDataException;
-import splug.slib.commands.content.ArgData;
 import splug.slib.commands.content.ArgumentContent;
-import splug.slib.commands.usage.CommandUsageExecutor;
+import splug.slib.commands.content.ArgumentHandleData;
+import splug.slib.commands.exception.ArgumentUseException;
+import splug.slib.commands.exception.HandleArgumentDataException;
 
 import java.util.*;
 
-@SuppressWarnings("unused")
-@Data @AllArgsConstructor(access = AccessLevel.PUBLIC)
-public abstract class AbstractArgument<P extends JavaPlugin, T extends ArgumentData> {
+@Data @SuppressWarnings("unused")
+public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandData> {
 
     private final P plugin;
+    //Место аргумента по порядку начиная с единицы после основной команды (/команда 1.аргумент 2.аргумент...)
     private final int ordinal;
 
-    private final List<ArgumentContent<T>> contents = new ArrayList<>();
-    private final Set<AbstractArgument<P, T>> arguments = new HashSet<>();
+    //Контент текущего аргумента
+    private final Set<ArgumentContent<T>> contentSet = new HashSet<>();
+    //Аргументы, которые следуют после текущего аргумента
+    private final Set<AbstractArgument<P, T>> argumentSet = new HashSet<>();
 
     private String permission;
-    private final CommandUsageExecutor cmdUsage;
-
-    AbstractArgument(P plugin, int ordinal) {
-        this.plugin = plugin;
-        this.ordinal = ordinal;
-        this.cmdUsage = new CommandUsageExecutor(plugin.getName());
-    }
-
-    AbstractArgument(P plugin, int ordinal, String pluginName) {
-        this.plugin = plugin;
-        this.ordinal = ordinal;
-        this.cmdUsage = new CommandUsageExecutor(pluginName);
-    }
-
-    protected void sendUsageMSG(CommandSender sender) {
-        sender.sendMessage(cmdUsage.getUsageMessage());
-    }
+    private String noPermissionMessage = "§8[§6%s§8] §cИзвините, но у вас недостаточно прав для этого";
 
     protected void addContent(ArgumentContent<T> argumentContent) {
-        contents.add(argumentContent);
+        contentSet.add(argumentContent);
     }
-
     protected void addArgument(AbstractArgument<P, T> abstractArgument) {
-        arguments.add(abstractArgument);
+        argumentSet.add(abstractArgument);
     }
 
-    protected boolean executeArguments(CommandSender sender, String[] args, T data) {
+    AbstractArgument(P plugin, int ordinal) {
+        this(plugin, ordinal, null);
+    }
+
+    public AbstractArgument(P plugin, int ordinal, String permission) {
+        this(plugin, ordinal, permission, plugin.getName());
+    }
+
+    public AbstractArgument(P plugin, int ordinal, String permission, String pluginName) {
+        this.plugin = plugin;
+        this.ordinal = ordinal;
+        this.permission = permission;
+
+        noPermissionMessage = noPermissionMessage.formatted(pluginName);
+    }
+
+    protected boolean commandExecute(CommandSender sender, String[] args, T data) {
         if (args.length < ordinal) return false;
 
-        boolean isTargetArgument = contents.isEmpty();
+        handleContent(sender, args, data);
 
-        try {
-            if (!isTargetArgument) {
-                isTargetArgument = isTargetArgument(sender, args, data);
-            }
-        } catch (HandleArgumentDataException e) {
-            return true;
-        }
-
-        if (!isTargetArgument) return false;
-
-        for (final AbstractArgument<P, T> argument : arguments) {
-            if (argument.executeArguments(sender, args, data)) {
-                return true;
-            }
-        }
+        if (args.length > ordinal && commandExecuteNext(sender, args, data)) return true;
 
         if (data.isValid(args)) {
-            return tryExecuteThis(sender, data);
+            return commandExecuteThis(sender, args, data);
         } else {
             if (args.length == ordinal) {
-                sendUsageMSG(sender);
+                throw new ArgumentUseException();
             }
         }
 
         return true;
     }
 
-    private boolean isTargetArgument(CommandSender sender, String[] args, T data) {
-        for (int i = 0; i < contents.size(); i++) {
-            final ArgumentContent<T> content = contents.get(i);
+    private void handleContent(CommandSender sender, String[] args, T data) {
+        final Iterator<ArgumentContent<T>> contentIterator = contentSet.iterator();
+        while (contentIterator.hasNext()) {
+            final ArgumentContent<T> content = contentIterator.next();
             try {
-                content.handleArgumentData(new ArgData<>(sender, args, data, ordinal, (i == contents.size() - 1)));
-            } catch (HandleArgumentDataException e) {
-                if (e.isSendUsage()) {
-                    sendUsageMSG(sender);
-                    throw new HandleArgumentDataException();
+                content.handleArgumentData(
+                    new ArgumentHandleData<>(sender, args, data, ordinal, contentIterator.hasNext())
+                );
+            } catch (HandleArgumentDataException exception) {
+                if (exception.isSendUsage()) {
+                    throw new ArgumentUseException();
                 }
-                continue;
             }
-            return true;
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private boolean commandExecuteThis(CommandSender sender, String[] args, T data) {
+        try {
+            if (this instanceof ExecutableArgument<?>) {
+                final ExecutableArgument<T> executableArgument = (ExecutableArgument<T>) this;
+                executableArgument.execute(sender, args, data);
+            } else {
+                return false;
+            }
+        } catch (ClassCastException exception) {
+            plugin.getLogger().warning("§8[§6AbstractArgument§8] §fКак оно так случилася хз | ошибка: §c%s"
+                    .formatted(exception.getMessage()));
+        }
+        return true;
+    }
+
+    private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
+        for (final AbstractArgument<P, T> argument : argumentSet) {
+            if (argument.isNotTargetArgument(args[ordinal])) continue;
+            if (argument.senderNoPermission(sender))  return true;
+            if (argument.commandExecute(sender, args, data))  return true;
         }
         return false;
     }
 
-    @SuppressWarnings("unchecked")
-    private boolean tryExecuteThis(CommandSender sender, T data) {
-        if (!sender.hasPermission(getPermission())) return true;
-
-        if (this instanceof ExecutableArgument<?>) {
-            final ExecutableArgument<T> argument = (ExecutableArgument<T>) this;
-            argument.execute(sender, data);
-            return true;
-        } else {
-            return false;
-        }
-    }
-
-
-    protected List<String> handleTabComplete(CommandSender sender, String[] args) {
+    protected List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == ordinal) {
-            final Set<String> out = handleTabCompleteThis(sender, args);
-            return out == null ? null : new ArrayList<>(out);
+            return tabCompleteThis(sender, args);
+        } else {
+            return tabCompleteNext(sender, args);
         }
-
-        return handleCompleteNext(sender, args);
     }
 
-    private Set<String> handleTabCompleteThis(CommandSender sender, String[] args) {
-        final Set<String> out = new HashSet<>();
+    private List<String> tabCompleteThis(CommandSender sender, String[] args) {
+        final List<String> out = new ArrayList<>();
 
-        for (final ArgumentContent<T> content : contents) {
+        for (final ArgumentContent<T> content : contentSet) {
             if (!content.hasPermission(sender)) continue;
-
-            final Set<String> outResult = content.getArgs(args[ordinal - 1]);
-            if (outResult == null) return null;
-
-            out.addAll(content.getArgs(args[ordinal - 1]));
+            final Set<String> contentArgs = content.getArgs(args[ordinal - 1]);
+            if (contentArgs == null) return null;
+            out.addAll(contentArgs);
         }
-
         return out;
     }
 
-    private ArrayList<String> handleCompleteNext(CommandSender sender, String[] args) {
-        final Set<String> out = new HashSet<>();
-
-        for (final AbstractArgument<P, T> argument : arguments) {
-            if (!sender.hasPermission(argument.getPermission())) continue;
-            final List<String> outResult = argument.handleTabComplete(sender, args);
-            if (outResult == null) return null;
-            out.addAll(outResult);
+    private List<String> tabCompleteNext(CommandSender sender, String[] args) {
+        final List<String> out = new ArrayList<>();
+        for (final AbstractArgument<P, T> argument : argumentSet) {
+            if (argument.senderNoPermission(sender)) continue;
+            if (argument.isNotTargetArgument(args[ordinal])) continue;
+            final List<String> argumentArgs = argument.tabComplete(sender, args);
+            if (argumentArgs == null) return null;
+            out.addAll(argumentArgs);
         }
-
-        return new ArrayList<>(out);
+        return out;
     }
 
-    private void log(Object o) {
-        Bukkit.getLogger().warning("§f[§6SLib§f] %s".formatted(String.valueOf(o)));
+    private boolean isNotTargetArgument(String arg) {
+        if (arg.isEmpty()) return false;
+        for (final ArgumentContent<T> content : contentSet) {
+            if (content.getArgs() == null) return false;
+            if (!content.getArgs(arg).isEmpty()) return false;
+        }
+        return true;
+    }
+
+    protected boolean senderNoPermission(CommandSender sender) {
+        if (sender.hasPermission(permission)) return false;
+        sender.sendMessage(noPermissionMessage);
+        return true;
     }
 }

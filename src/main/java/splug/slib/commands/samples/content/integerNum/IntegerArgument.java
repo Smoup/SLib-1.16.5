@@ -4,21 +4,20 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.AbstractArgument;
-import splug.slib.commands.usage.CommandUsageExecutor;
 
 @ToString
 @EqualsAndHashCode(callSuper = true) @SuppressWarnings("unused")
-public class IntegerArgument <P extends JavaPlugin, T extends IntegerData> extends AbstractArgument<P, T> {
+public class IntegerArgument <P extends JavaPlugin, T extends IntegerCommandData> extends AbstractArgument<P, T> {
 
-    public IntegerArgument(P plugin, int ordinal, String permission, CommandUsageExecutor cmdUsage) {
-        super(plugin, ordinal, permission + ".integer-number-list", cmdUsage);
+    public IntegerArgument(P plugin, int ordinal, String permission) {
+        super(plugin, ordinal, permission + ".integer-number-list");
 
-        addContent(new IntegerContent<>(plugin, getPermission()));
+        addContent(new IntegerArgumentContent<>(plugin, getPermission()));
     }
 
-    public IntegerArgument(P plugin, int ordinal, String permission, CommandUsageExecutor cmdUsage, String pluginName) {
-        super(plugin, ordinal, permission + ".integer-number-list", cmdUsage);
+    public IntegerArgument(P plugin, int ordinal, String permission, String pluginName) {
+        super(plugin, ordinal, permission + ".integer-number-list");
 
-        addContent(new IntegerContent<>(plugin, getPermission(), pluginName));
+        addContent(new IntegerArgumentContent<>(plugin, getPermission(), pluginName));
     }
 }
