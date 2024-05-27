@@ -32,4 +32,12 @@ public class MenuHandler {
     public AbstractMenu<?> getMenu(Inventory inventory) {
         return menusByInventory.get(inventory);
     }
+
+    public void onDisable() {
+        for (Inventory inventory : menusByInventory.keySet()) {
+            while (inventory.getViewers().iterator().hasNext()) {
+                inventory.getViewers().iterator().next().closeInventory();
+            }
+        }
+    }
 }
