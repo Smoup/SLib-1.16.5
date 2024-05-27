@@ -37,7 +37,8 @@ public class ItemStackParser {
             .amount(itemSection.getInt("amount", 1))
             .unbreakable(itemSection.getBoolean("unbreakable", false))
             .customModelData(itemSection.getInt("custom-model-data"))
-            .localizedName(itemSection.getString("localized-name"));
+            .localizedName(itemSection.getString("localized-name"))
+            .fakeEnchantment(itemSection.getBoolean("fake-enchant", false));
 
         return handleOther(itemSection, logger, itemStackBuilder);
     }

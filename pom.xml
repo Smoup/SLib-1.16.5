@@ -6,7 +6,7 @@
 
   <groupId>splug</groupId>
   <artifactId>SLib</artifactId>
-  <version>1.16.5-2.3.0</version>
+  <version>1.16.5-2.3.01</version>
   <packaging>jar</packaging>
 
   <name>SLib</name>
