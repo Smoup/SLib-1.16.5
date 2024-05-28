@@ -58,10 +58,6 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
 
         if (data.isValid(args)) {
             return commandExecuteThis(sender, args, data);
-        } else {
-            if (args.length == ordinal) {
-                throw new ArgumentUseException();
-            }
         }
 
         return true;
