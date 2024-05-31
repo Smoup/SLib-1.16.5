@@ -80,6 +80,6 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     }
 
     public void log(String msg) {
-        getPlugin().getLogger().warning("§f[§6Меню§f] [%s§f] %s".formatted(title, msg));
+        getPlugin().getLogger().warning("§8[§6Меню§8] §8[§r%s§8] §f%s".formatted(title, msg));
     }
 }
