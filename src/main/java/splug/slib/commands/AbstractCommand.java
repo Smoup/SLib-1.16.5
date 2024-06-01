@@ -7,6 +7,7 @@ import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ExecutableArgument;
+import splug.slib.commands.data.CommandData;
 import splug.slib.commands.exception.ArgumentUseException;
 import splug.slib.commands.usage.CommandUsageExecutor;
 

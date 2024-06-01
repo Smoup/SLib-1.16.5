@@ -6,6 +6,7 @@ import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ExecutableArgument;
 import splug.slib.commands.content.ArgumentContent;
 import splug.slib.commands.content.ArgumentHandleData;
+import splug.slib.commands.data.CommandData;
 import splug.slib.commands.exception.ArgumentUseException;
 import splug.slib.commands.exception.HandleArgumentDataException;
 

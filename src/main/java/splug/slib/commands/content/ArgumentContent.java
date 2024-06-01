@@ -1,7 +1,7 @@
 package splug.slib.commands.content;
 
 import org.bukkit.command.CommandSender;
-import splug.slib.commands.CommandData;
+import splug.slib.commands.data.CommandData;
 
 import java.util.Set;
 

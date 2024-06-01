@@ -3,7 +3,7 @@ package splug.slib.commands.content;
 import lombok.Data;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.CommandData;
+import splug.slib.commands.data.CommandData;
 
 import java.util.Set;
 import java.util.stream.Collectors;

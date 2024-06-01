@@ -3,9 +3,9 @@ package splug.slib.commands.samples.content.string;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.plugin.java.JavaPlugin;
-import splug.slib.commands.CommandData;
 import splug.slib.commands.content.AbstractArgumentContent;
 import splug.slib.commands.content.ArgumentHandleData;
+import splug.slib.commands.data.CommandData;
 import splug.slib.commands.exception.HandleArgumentDataException;
 
 import java.util.Set;
