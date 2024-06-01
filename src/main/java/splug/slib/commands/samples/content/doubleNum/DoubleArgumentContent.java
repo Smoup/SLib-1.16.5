@@ -53,6 +53,7 @@ public class DoubleArgumentContent<P extends JavaPlugin, T extends DoubleCommand
             handleData.getSender().sendMessage(incorrectMSG.formatted(numString));
             throw new HandleArgumentDataException(handleData.isLast());
         }
+
         handleData.getData().setDoubleNumber(number);
     }
 

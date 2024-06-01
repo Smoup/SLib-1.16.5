@@ -137,7 +137,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     }
 
     private boolean isNotTargetArgument(String arg) {
-        if (arg.isEmpty()) return false;
+        if (arg.isEmpty() || contentSet.size() == 1) return false;
         for (final ArgumentContent<T> content : contentSet) {
             if (content.getArgs() == null) return false;
             if (!content.getArgs(arg).isEmpty()) return false;
