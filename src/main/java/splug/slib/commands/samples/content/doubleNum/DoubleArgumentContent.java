@@ -65,12 +65,6 @@ public class DoubleArgumentContent<P extends JavaPlugin, T extends DoubleCommand
                 .collect(Collectors.toSet());
 
         if (!out.isEmpty()) return out;
-
-        try {
-            Double.parseDouble(prefix);
-        } catch (NumberFormatException e) {
-            return out;
-        }
         out.add(prefix);
         return out;
     }

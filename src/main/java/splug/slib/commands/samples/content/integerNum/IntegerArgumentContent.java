@@ -63,12 +63,6 @@ public class IntegerArgumentContent<P extends JavaPlugin, T extends IntegerComma
                 .collect(Collectors.toSet());
 
         if (!out.isEmpty()) return out;
-
-        try {
-            Integer.parseInt(prefix);
-        } catch (NumberFormatException e) {
-            return out;
-        }
         out.add(prefix);
         return out;
     }

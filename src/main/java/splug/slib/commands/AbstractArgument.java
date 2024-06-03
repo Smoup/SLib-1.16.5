@@ -99,8 +99,8 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
         for (final AbstractArgument<P, T> argument : argumentSet) {
             if (argument.isNotTargetArgument(args[ordinal])) continue;
-            if (argument.senderNoPermission(sender))  return true;
-            if (argument.commandExecute(sender, args, data))  return true;
+            if (argument.senderNoPermission(sender)) return true;
+            if (argument.commandExecute(sender, args, data)) return true;
         }
         return false;
     }
@@ -138,7 +138,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     }
 
     private boolean isNotTargetArgument(String arg) {
-        if (arg.isEmpty() || contentSet.size() == 1) return false;
+        if (arg.isEmpty()) return false;
         for (final ArgumentContent<T> content : contentSet) {
             if (content.getArgs() == null) return false;
             if (!content.getArgs(arg).isEmpty()) return false;

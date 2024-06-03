@@ -1,31 +1,44 @@
 item-shovel:
-    material: 'IRON_SHOVEL'
-    player-head-texture: "Значение с сайта https://minecraft-heads.com/ For Developers: Value"
-    display-name: "§f§lЛопата CASPER"
-    potion-effects:
-      INCREASE_DAMAGE:
-        duration: 60 #секунды
-        amplifier: 3 #уровень эффекта
-        ambient: true #default - true
-        particles: true #default - true
+  material: 'IRON_SHOVEL' #org.bukkit.Material
+  player-head-texture: "Значение с сайта https://minecraft-heads.com/ For Developers: Value"
+  rgb: 153, 217, 236
+  display-name: "§f§lЛопаточка"
+  lore:
+    - '§fописание'
+    - '§aпредмета'
+  amount: 14 #default 1
+  unbreakable: true #default false
+  custom-model-data: 123
+  localized-name: "localized-name"
+  fake-enchant: true #default false
+
+  enchants:
+    DIG_SPEED: 2
+    DURABILITY: 1
+    LOOT_BONUS_BLOCKS: 2
+
+  item-flags:
+    HIDE_ENCHANTS: true  #org.bukkit.inventory.ItemFlag
+
+  tripped-arrow-effects:
+    NIGHT_VISION:
+      long-duration: true
+      second-level: true
+
+  attribute-modifiers:
+    GENERIC_MAX_HEALTH: #org.bukkit.attribute.Attribute
+      modifier: 1.0
+      modify-type: ADD_NUMBER #org.bukkit.attribute.AttributeModifier.Operation
+      equipments-slots: #org.bukkit.inventory.EquipmentSlot если не указать не одного слота то будет работать везде
+        - OFF_HAND
 
 
 
-    enchants:
-      DIG_SPEED: 2
-      DURABILITY: 1
-      LOOT_BONUS_BLOCKS: 2
-
-    tripped-arrow-effects:
-      NIGHT_VISION:
-        long-duration: true
-        second-level: true
-
-    attribute-modifiers:
-      GENERIC_MAX_HEALTH: #org.bukkit.attribute.Attribute
-        modifier: 1.0
-        modify-type: ADD_NUMBER #org.bukkit.attribute.AttributeModifier.Operation
-        equipments-slots: #org.bukkit.inventory.EquipmentSlot если не указать не одного слота то будет работать везде
-          - OFF_HAND
 
 
+  potion-effects:
+    INCREASE_DAMAGE:
+      duration: 60 #секунды
+      amplifier: 3 #уровень эффекта
+      ambient: true #default - true
+      particles: true #default - true
