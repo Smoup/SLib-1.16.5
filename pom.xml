@@ -17,6 +17,21 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
 
+  <licenses>
+    <license>
+        <name>BSD 3-Clause License</name>
+        <url>https://gitlab.com/uPagge/upagge-utils/-/raw/master/LICENSE</url>
+    </license>
+  </licenses>
+
+  <developers>
+    <developer>
+        <id>Owner</id>
+        <name>German</name>
+        <url>https://vk.com/smoup</url>
+    </developer>
+  </developers>
+
   <build>
     <plugins>
       <plugin>
@@ -40,31 +55,6 @@
             </goals>
           </execution>
         </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.apache.maven.plugins</groupId>
-        <artifactId>maven-gpg-plugin</artifactId>
-        <version>3.2.4</version>
-        <executions>
-            <execution>
-                <id>sign-artifacts</id>
-                <phase>verify</phase>
-                <goals>
-                    <goal>sign</goal>
-                </goals>
-            </execution>
-        </executions>
-      </plugin>
-      <plugin>
-        <groupId>org.sonatype.plugins</groupId>
-        <artifactId>nexus-staging-maven-plugin</artifactId>
-        <version>1.6.8</version>
-        <extensions>true</extensions>
-        <configuration>
-            <serverId>ossrh</serverId>
-            <nexusUrl>https://oss.sonatype.org/</nexusUrl>
-            <autoReleaseAfterClose>true</autoReleaseAfterClose>
-        </configuration>
       </plugin>
     </plugins>
     <resources>
@@ -114,12 +104,6 @@
           <artifactId>authlib</artifactId>
           <version>1.5.21</version>
           <scope>provided</scope>
-      </dependency>
-      <dependency>
-          <groupId>org.jetbrains</groupId>
-          <artifactId>annotations</artifactId>
-          <version>24.0.1</version>
-          <scope>compile</scope>
       </dependency>
   </dependencies>
 </project>

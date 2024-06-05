@@ -30,7 +30,7 @@ public class SlotsParser {
             for (String slots : menuSlotsStrings) {
                 final String[] contents = slots.split("-");
                 if (contents.length != 2) {
-                    logger.warning(("§f[§cКонфиг§f] [§cМеню§f] §cнеудачная обработка секции §6menu-slots §f|" +
+                    logger.warning(("§f[§cКонфиг§f] [§cМеню§f] §cНеудачная обработка секции §6menu-slots §f|" +
                             " Неверный формат: §6%s §f| путь: %s").formatted(slots, itemSection.getCurrentPath()));
                     continue;
                 }
