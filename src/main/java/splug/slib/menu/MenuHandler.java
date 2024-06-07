@@ -5,6 +5,7 @@ import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.AbstractArgument;
+import splug.slib.commands.content.AbstractArgumentContent;
 import splug.slib.commands.data.CommandData;
 import splug.slib.commands.samples.content.string.StringContent;
 
@@ -51,5 +52,10 @@ public class MenuHandler {
     public <P extends JavaPlugin, T extends CommandData> void handleTabCompleter
             (AbstractArgument<P,T> argument, P plugin, String perm) {
         argument.addContent(new StringContent<>(plugin, perm, menusByName.keySet()));
+    }
+
+    public <P extends JavaPlugin, T extends CommandData> void handleTabCompleter
+            (AbstractArgumentContent<P,T> content) {
+        content.setArgs(menusByName.keySet());
     }
 }
