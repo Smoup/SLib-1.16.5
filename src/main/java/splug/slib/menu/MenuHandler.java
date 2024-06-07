@@ -39,5 +39,8 @@ public class MenuHandler {
                 inventory.getViewers().iterator().next().closeInventory();
             }
         }
+
+        menusByInventory.clear();
+        menusByName.clear();
     }
 }
