@@ -15,7 +15,7 @@ import java.util.List;
 
 @EqualsAndHashCode(callSuper = true) @ToString @Getter
 public abstract class AbstractCommand<P extends JavaPlugin, T extends CommandData> extends AbstractArgument<P, T>
-        implements CommandExecutor, TabCompleter, ExecutableArgument<T> {
+        implements TabExecutor, ExecutableArgument<T> {
 
     private final CommandUsageExecutor cmdUsage;
 

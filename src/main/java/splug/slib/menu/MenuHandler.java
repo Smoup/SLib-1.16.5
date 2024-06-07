@@ -3,6 +3,10 @@ package splug.slib.menu;
 import lombok.Data;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
+import org.bukkit.plugin.java.JavaPlugin;
+import splug.slib.commands.AbstractArgument;
+import splug.slib.commands.data.CommandData;
+import splug.slib.commands.samples.content.string.StringContent;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -42,5 +46,10 @@ public class MenuHandler {
 
         menusByInventory.clear();
         menusByName.clear();
+    }
+
+    public <P extends JavaPlugin, T extends CommandData> void handleTabCompleter
+            (AbstractArgument<P,T> argument, P plugin, String perm) {
+        argument.addContent(new StringContent<>(plugin, perm, menusByName.keySet()));
     }
 }

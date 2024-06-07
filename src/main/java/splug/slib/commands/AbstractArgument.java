@@ -27,10 +27,10 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     private String permission;
     private String noPermissionMessage = "§8[§6%s§8] §cИзвините, но у вас недостаточно прав для этого";
 
-    protected void addContent(ArgumentContent<T> argumentContent) {
+    public void addContent(ArgumentContent<T> argumentContent) {
         contentSet.add(argumentContent);
     }
-    protected void addArgument(AbstractArgument<P, T> abstractArgument) {
+    public void addArgument(AbstractArgument<P, T> abstractArgument) {
         argumentSet.add(abstractArgument);
     }
 
