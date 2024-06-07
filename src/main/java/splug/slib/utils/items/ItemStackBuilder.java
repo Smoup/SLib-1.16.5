@@ -1,6 +1,7 @@
 package splug.slib.utils.items;
 
-import lombok.*;
+import lombok.Data;
+import lombok.NonNull;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
