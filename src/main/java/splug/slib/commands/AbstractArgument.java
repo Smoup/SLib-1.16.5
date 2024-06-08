@@ -128,7 +128,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     private List<String> tabCompleteNext(CommandSender sender, String[] args) {
         final List<String> out = new ArrayList<>();
         for (final AbstractArgument<P, T> argument : argumentSet) {
-            if (argument.senderNoPermission(sender)) continue;
+            if (!sender.hasPermission(permission)) continue;
             if (argument.isNotTargetArgument(args[ordinal])) continue;
             final List<String> argumentArgs = argument.tabComplete(sender, args);
             if (argumentArgs == null) return null;
