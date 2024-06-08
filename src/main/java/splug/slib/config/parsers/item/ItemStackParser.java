@@ -40,7 +40,7 @@ public class ItemStackParser {
                 .customModelData(itemSection.getInt("custom-model-data"))
                 .localizedName(itemSection.getString("localized-name"))
                 .fakeEnchantment(itemSection.getBoolean("fake-enchant", false))
-                .unStackable(itemSection.getBoolean("un-stackable", false), plugin);
+                .unStackable(itemSection.getBoolean("un-stackable", false));
 
         return handleOther(itemSection, plugin.getLogger(), itemStackBuilder);
     }

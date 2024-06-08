@@ -4,7 +4,6 @@ import lombok.Data;
 import lombok.NonNull;
 import org.bukkit.Color;
 import org.bukkit.Material;
-import org.bukkit.NamespacedKey;
 import org.bukkit.attribute.Attribute;
 import org.bukkit.attribute.AttributeModifier;
 import org.bukkit.enchantments.Enchantment;
@@ -15,7 +14,6 @@ import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
-import org.bukkit.plugin.java.JavaPlugin;
 
 import java.util.List;
 import java.util.UUID;
@@ -176,12 +174,11 @@ public class ItemStackBuilder {
     }
 
     @NonNull
-    public ItemStackBuilder unStackable(boolean unStackable, JavaPlugin plugin) {
+    public ItemStackBuilder unStackable(boolean unStackable) {
         if (!unStackable) return this;
 
         final PersistentDataContainer pdc = itemMeta.getPersistentDataContainer();
-        final NamespacedKey nKey = new NamespacedKey(plugin, "id");
-        pdc.set(nKey, PersistentDataType.STRING, String.valueOf(UUID.randomUUID()));
+        pdc.set(UnStackableItem.getNamespaceKey(), PersistentDataType.STRING, String.valueOf(UUID.randomUUID()));
 
         return this;
     }
