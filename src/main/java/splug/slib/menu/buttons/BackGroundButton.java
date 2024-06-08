@@ -1,4 +1,4 @@
-package splug.slib.menu;
+package splug.slib.menu.buttons;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;

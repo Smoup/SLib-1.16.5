@@ -64,8 +64,7 @@ public class ItemStackParser {
         return material;
     }
 
-    private static void invalidMaterial
-            (Logger logger, String sectionPath) {
+    private static void invalidMaterial(Logger logger, String sectionPath) {
         logger.warning(("§f[§6Config§f] [§6ItemStackParser§f] §cНекорректный тип material §f|" +
                 " Используйте значение из org.bukkit.Material §f| путь: %s").formatted(sectionPath));
     }
