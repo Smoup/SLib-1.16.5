@@ -7,6 +7,7 @@ import lombok.experimental.UtilityClass;
 import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.inventory.ItemStack;
+import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.config.parsers.item.exception.ItemStackParserException;
 import splug.slib.utils.items.ItemStackBuilder;
 
@@ -18,8 +19,8 @@ import java.util.logging.Logger;
 public class ItemStackParser {
 
     @NonNull
-    public static ItemStack parse(@NonNull ConfigurationSection itemSection, Logger logger) {
-        final Material material = handleMaterial(logger, itemSection);
+    public static ItemStack parse(@NonNull ConfigurationSection itemSection, JavaPlugin plugin) {
+        final Material material = handleMaterial(plugin.getLogger(), itemSection);
 
         if (material == null) {
             throw new ItemStackParserException();
@@ -27,9 +28,9 @@ public class ItemStackParser {
 
         final ItemStackBuilder itemStackBuilder = ItemStackBuilder.of(material);
 
-        EnchantsParser.handleEnchants(logger, itemStackBuilder, itemSection);
-        ItemFlagParser.handleItemFlags(logger, itemStackBuilder, itemSection);
-        AttributeModifiersParser.handleAttributeModifiers(logger, itemStackBuilder, itemSection);
+        EnchantsParser.handleEnchants(plugin.getLogger(), itemStackBuilder, itemSection);
+        ItemFlagParser.handleItemFlags(plugin.getLogger(), itemStackBuilder, itemSection);
+        AttributeModifiersParser.handleAttributeModifiers(plugin.getLogger(), itemStackBuilder, itemSection);
 
         itemStackBuilder
             .lore(itemSection.getStringList("lore"))
@@ -40,7 +41,7 @@ public class ItemStackParser {
             .localizedName(itemSection.getString("localized-name"))
             .fakeEnchantment(itemSection.getBoolean("fake-enchant", false));
 
-        return handleOther(itemSection, logger, itemStackBuilder);
+        return handleOther(itemSection, plugin.getLogger(), itemStackBuilder);
     }
 
     private static Material handleMaterial
