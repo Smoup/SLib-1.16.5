@@ -4,7 +4,7 @@
          xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
 
-  <groupId>io.github.smoup</groupId>
+  <groupId>com.github.smoup</groupId>
   <artifactId>slib</artifactId>
   <version>1.16.5-2.3.15</version>
   <packaging>jar</packaging>
