@@ -33,13 +33,14 @@ public class ItemStackParser {
         AttributeModifiersParser.handleAttributeModifiers(plugin.getLogger(), itemStackBuilder, itemSection);
 
         itemStackBuilder
-            .lore(itemSection.getStringList("lore"))
-            .displayName(itemSection.getString("display-name"))
-            .amount(itemSection.getInt("amount", 1))
-            .unbreakable(itemSection.getBoolean("unbreakable", false))
-            .customModelData(itemSection.getInt("custom-model-data"))
-            .localizedName(itemSection.getString("localized-name"))
-            .fakeEnchantment(itemSection.getBoolean("fake-enchant", false));
+                .lore(itemSection.getStringList("lore"))
+                .displayName(itemSection.getString("display-name"))
+                .amount(itemSection.getInt("amount", 1))
+                .unbreakable(itemSection.getBoolean("unbreakable", false))
+                .customModelData(itemSection.getInt("custom-model-data"))
+                .localizedName(itemSection.getString("localized-name"))
+                .fakeEnchantment(itemSection.getBoolean("fake-enchant", false))
+                .unStackable(itemSection.getBoolean("un-stackable", false), plugin);
 
         return handleOther(itemSection, plugin.getLogger(), itemStackBuilder);
     }
@@ -53,7 +54,7 @@ public class ItemStackParser {
             return null;
         }
 
-        final Material material = Material.getMaterial(materialName);
+        final Material material = Material.getMaterial(materialName.toUpperCase());
 
         if (material == null) {
             invalidMaterial(logger, itemSection.getCurrentPath());
