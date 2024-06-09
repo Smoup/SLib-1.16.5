@@ -117,6 +117,7 @@ public class ItemStackBuilder {
 
     @NonNull
     public ItemStackBuilder customModelData(int customModelData) {
+        if (customModelData == 0) return this;
 
         itemMeta.setCustomModelData(customModelData);
         return this;
