@@ -67,5 +67,4 @@ public enum EnchantmentRussianName {
 
         return "Неизвестное зачарование";
     }
-
 }
