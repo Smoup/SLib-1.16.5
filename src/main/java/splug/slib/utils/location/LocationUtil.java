@@ -37,4 +37,8 @@ public class LocationUtil {
         sb.setLength(sb.length() - 1);
         return sb.toString();
     }
+
+    public static Location getCenter(Location loc) {
+        return new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5);
+    }
 }
