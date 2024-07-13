@@ -35,6 +35,18 @@ items:
       NIGHT_VISION:
         long-duration: true
         second-level: true
+
+    potion-data:
+      potion-type: WATER #org.bukkit.potion.PotionType
+      extended: true #default - false
+      upgraded: true #default - false
+    
+    potion-effects:
+      INCREASE_DAMAGE:
+        duration: 60 #секунды
+        amplifier: 3 #уровень эффекта
+        ambient: true #default - true
+        particles: true #default - true
 ```
 > [!IMPORTANT]
 > Ключ предмета `item-key` должен быть уникален
@@ -43,7 +55,7 @@ items:
 |-----------------------|:-----------------------:|:---------------------------------:|----------------------------------------------------------------------------------------------------------------------------------------------------------------------|---------------------------------------------------------------------------------------------------------------------------------------------------------------------------|
 | material              |            -            |               STONE               | [Материалы](https://hub.spigotmc.org/javadocs/bukkit/org/bukkit/Material.html) (использовать `Enum Constant`)                                                        | Значение обязательно                                                                                                                                                      |
 | player-head-texture   |            -            |           под таблицей            | [Текстуры-голов](https://minecraft-heads.com/) (использовать `For Developer: Value`)                                                                                 | Значение будет использовано если `material` = `PLAYER_HEAD`                                                                                                               |
-| rgb                   |            -            |           153, 217, 236           | [RGB](https://g.co/kgs/jMKSRgx) (использовать `RGB`)                                                                                                                 | Значение будет использовано если `material` содержит в названии `LEATHER`                                                                                                 |
+| rgb                   |            -            |           153, 217, 236           | [RGB](https://g.co/kgs/jMKSRgx) (использовать `RGB`)                                                                                                                 | Значение будет использовано если `material` содержит в названии `LEATHER` или `material` = `POTION` или `SPLASH_POTION` или `LINGERING_POTION` или `TIPPED_ARROW`         |
 | display-name          |            -            |           "§f§lПредмет"           | [цвета](https://www.birdflop.com/resources/rgb/)                                                                                                                     | Для название предмета можно использовать цвета `§fТекст`                                                                                                                  |
 | lore                  |            -            | - '§fСтрока1' <br/> - '§cСтрока2' | [цвета](https://www.birdflop.com/resources/rgb/)                                                                                                                     | В описании предмета можно использовать несколько строк `§fСтрока1` `§cСтрока2`                                                                                            |
 | amount                |            1            |                 8                 | <div align="center"> -                                                                                                                                               | Количество может быть в пределах `1-64`                                                                                                                                   |
@@ -56,6 +68,8 @@ items:
 | item-flags            |            -            |                 -                 | [`Клик`](https://github.com/Smoup/SLib-1.16.5#%D1%84%D0%BB%D0%B0%D0%B3%D0%B8-%D0%BF%D1%80%D0%B5%D0%B4%D0%BC%D0%B5%D1%82%D0%B0-item-flags)                            | <div align="center"> -                                                                                                                                                    |
 | attribute-modifiers   |            -            |                 -                 | [`Клик`](https://github.com/Smoup/SLib-1.16.5#%D0%B0%D1%82%D1%80%D0%B8%D0%B1%D1%83%D1%82%D1%8B-%D0%BF%D1%80%D0%B5%D0%B4%D0%BC%D0%B5%D1%82%D0%B0-attribute-modifiers) | <div align="center"> -                                                                                                                                                    |
 | tripped-arrow-effects |            -            |                 -                 | [`Клик`](https://github.com/Smoup/SLib-1.16.5#%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D1%8B-%D1%81%D1%82%D1%80%D0%B5%D0%BB%D1%8B-tripped-arrow-effects)                 | Значение будет использовано если `material` = `TIPPED_ARROW`                                                                                                              |
+| potion-data           |            -            |                 -                 | [`Клик`](https://github.com/Smoup/SLib-1.16.5#%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D1%8B-%D1%81%D1%82%D1%80%D0%B5%D0%BB%D1%8B-tripped-arrow-effects)                 | Значение будет использовано если `material` = `POTION` или `SPLASH_POTION` или `LINGERING_POTION`                                                                         |
+| potion-effects        |            -            |                 -                 | [`Клик`](https://github.com/Smoup/SLib-1.16.5#%D1%8D%D1%84%D1%84%D0%B5%D0%BA%D1%82%D1%8B-%D1%81%D1%82%D1%80%D0%B5%D0%BB%D1%8B-tripped-arrow-effects)                 | Значение будет использовано если `material` = `POTION` или `SPLASH_POTION` или `LINGERING_POTION`                                                                         |
 
 > [!NOTE]
 > `player-head-texture` пример значения:
@@ -141,6 +155,39 @@ tripped-arrow-effects:
 
 > [!IMPORTANT]
 > `second-level` может быть `true` только если существует стрела с данным `EFFECT-KEY`
+> в ванильном майнкрафте и имеет второй `II` уровень эффекта
+> пример: `STRONG_HEALING`
+
+
+
+### Настройки зелий `potion-data` и `potion-effects`
+```yaml
+potion-data:
+  potion-type: WATER #org.bukkit.potion.PotionType
+  extended: true #default - false
+  upgraded: true #default - false
+
+potion-effects:
+  INCREASE_DAMAGE: #org.bukkit.potion.PotionEffectType
+    duration: 60 #секунды
+    amplifier: 3 #уровень эффекта
+    ambient: true #default - true
+    particles: true #default - true
+```
+
+> [!NOTE]
+> `potion-type` значение с [`Типы зелий`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionType.html)
+
+> [!NOTE]
+> `potion-effects` значение с [`Типы эффектов`](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/potion/PotionEffectType.html)
+
+> [!IMPORTANT]
+> `extended` может быть `true` только если существует зелье с данным `potion-type`
+> в ванильном майнкрафте и имеет несколько значений длительности
+> пример: `NIGHT_VISION`
+
+> [!IMPORTANT]
+> `upgraded` может быть `true` только если существует стрела с данным `potion-type`
 > в ванильном майнкрафте и имеет второй `II` уровень эффекта
 > пример: `STRONG_HEALING`
 
