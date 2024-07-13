@@ -32,12 +32,13 @@ item-shovel:
       equipments-slots: #org.bukkit.inventory.EquipmentSlot если не указать не одного слота то будет работать везде
         - OFF_HAND
 
-
-
-
+  potion-data:
+    potion-type: WATER #org.bukkit.potion.PotionType
+    extended: true #default - false
+    upgraded: true #default - false
 
   potion-effects:
-    INCREASE_DAMAGE:
+    INCREASE_DAMAGE: #org.bukkit.potion.PotionEffectType
       duration: 60 #секунды
       amplifier: 3 #уровень эффекта
       ambient: true #default - true

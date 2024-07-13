@@ -12,6 +12,7 @@ import org.bukkit.inventory.ItemFlag;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.meta.ItemMeta;
 import org.bukkit.inventory.meta.LeatherArmorMeta;
+import org.bukkit.inventory.meta.PotionMeta;
 import org.bukkit.persistence.PersistentDataContainer;
 import org.bukkit.persistence.PersistentDataType;
 
@@ -214,21 +215,29 @@ public class ItemStackBuilder {
 
     @NonNull
     public ItemStack build(int red, int green, int blue) {
-        //Только для кожаных предметов
-
-        if (!itemStack.getType().name().toUpperCase().contains("LEATHER")) {
-            return this.build();
-        }
+        //Только для кожаных предметов, зелий и стрел с эффектами
 
         itemStack.setItemMeta(itemMeta);
 
-        final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) itemStack.getItemMeta();
-        if (colorItemMeta == null) return this.build();
+        if (itemStack.getType().name().toUpperCase().contains("LEATHER")) {
+            final LeatherArmorMeta colorItemMeta = (LeatherArmorMeta) itemStack.getItemMeta();
+            if (colorItemMeta == null) return this.build();
 
-        colorItemMeta.setColor(Color.fromRGB(red, green, blue));
-        itemStack.setItemMeta(colorItemMeta);
+            colorItemMeta.setColor(Color.fromRGB(red, green, blue));
+            itemStack.setItemMeta(colorItemMeta);
 
-        return itemStack;
+            return itemStack;
+        } else if (itemStack.getType().name().toUpperCase().contains("POTION") || itemStack.getType().equals(Material.TIPPED_ARROW)) {
+            final PotionMeta potionMeta = (PotionMeta) itemStack.getItemMeta();
+            if (potionMeta == null) return this.build();
+
+            potionMeta.setColor(Color.fromRGB(red, green, blue));
+            itemStack.setItemMeta(potionMeta);
+
+            return itemStack;
+        } else {
+            return this.build();
+        }
     }
 
     @NonNull

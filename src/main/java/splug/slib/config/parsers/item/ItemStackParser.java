@@ -81,6 +81,10 @@ public class ItemStackParser {
             PlayerHeadParser.handlePlayerHead(logger, itemStack, itemSection);
         }
 
+        if (itemStack.getType().name().contains("POTION")) {
+            PotionParser.handlePotion(logger, itemStack, itemSection);
+        }
+
         return itemStack;
     }
 }
