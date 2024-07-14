@@ -19,7 +19,6 @@ public class EnchantsParser {
         final ConfigurationSection enchantsSection = itemSection.getConfigurationSection("enchants");
 
         if (enchantsSection == null) return;
-        logger.info(enchantsSection.toString());
 
         for (final String enchantName : enchantsSection.getKeys(false)) {
             final Enchantment enchant = Enchantment.getByName(enchantName);
@@ -33,8 +32,6 @@ public class EnchantsParser {
 
             final int enchantLevel = enchantsSection.getInt(enchantName);
 
-            logger.info("item:%s enchant:%s lvl:%s"
-                    .formatted(itemStackBuilder.getItemStack().getType().name(), enchant.getKey(), enchantLevel));
             itemStackBuilder.enchant(enchant, enchantLevel);
         }
     }

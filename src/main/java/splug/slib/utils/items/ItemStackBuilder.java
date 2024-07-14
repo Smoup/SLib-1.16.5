@@ -2,7 +2,6 @@ package splug.slib.utils.items;
 
 import lombok.Data;
 import lombok.NonNull;
-import org.bukkit.Bukkit;
 import org.bukkit.Color;
 import org.bukkit.Material;
 import org.bukkit.attribute.Attribute;
@@ -189,7 +188,7 @@ public class ItemStackBuilder {
     @NonNull
     public ItemStackBuilder enchant(@NonNull Enchantment enchantment, int level) {
 
-        Bukkit.getLogger().warning("status:%s".formatted(itemMeta.addEnchant(enchantment, level, true)));
+        itemMeta.addEnchant(enchantment, level, true);
         return this;
     }
 
