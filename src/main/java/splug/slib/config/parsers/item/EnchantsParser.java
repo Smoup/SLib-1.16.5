@@ -32,11 +32,7 @@ public class EnchantsParser {
 
             final int enchantLevel = enchantsSection.getInt(enchantName);
 
-            if (enchantName.equalsIgnoreCase("luck")) {
-                itemStackBuilder.enchant(Enchantment.LUCK, enchantLevel);
-            } else {
-                itemStackBuilder.enchant(enchant, enchantLevel);
-            }
+            itemStackBuilder.enchant(enchant, enchantLevel);
         }
     }
 }

@@ -28,10 +28,6 @@ public class ItemStackParser {
 
         final ItemStackBuilder itemStackBuilder = ItemStackBuilder.of(material);
 
-        EnchantsParser.handleEnchants(plugin.getLogger(), itemStackBuilder, itemSection);
-        ItemFlagParser.handleItemFlags(plugin.getLogger(), itemStackBuilder, itemSection);
-        AttributeModifiersParser.handleAttributeModifiers(plugin.getLogger(), itemStackBuilder, itemSection);
-
         itemStackBuilder
                 .lore(itemSection.getStringList("lore"))
                 .displayName(itemSection.getString("display-name"))
@@ -41,6 +37,10 @@ public class ItemStackParser {
                 .localizedName(itemSection.getString("localized-name"))
                 .fakeEnchantment(itemSection.getBoolean("fake-enchant", false))
                 .unStackable(itemSection.getBoolean("un-stackable", false));
+
+        EnchantsParser.handleEnchants(plugin.getLogger(), itemStackBuilder, itemSection);
+        ItemFlagParser.handleItemFlags(plugin.getLogger(), itemStackBuilder, itemSection);
+        AttributeModifiersParser.handleAttributeModifiers(plugin.getLogger(), itemStackBuilder, itemSection);
 
         return handleOther(itemSection, plugin.getLogger(), itemStackBuilder);
     }
