@@ -3,8 +3,10 @@ package splug.slib.config.parsers.item;
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import lombok.experimental.UtilityClass;
+import org.bukkit.Material;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.enchantments.Enchantment;
+import org.bukkit.inventory.ItemStack;
 import splug.slib.utils.items.ItemStackBuilder;
 
 import java.util.logging.Logger;
@@ -19,6 +21,7 @@ public class EnchantsParser {
         final ConfigurationSection enchantsSection = itemSection.getConfigurationSection("enchants");
 
         if (enchantsSection == null) return;
+        logger.warning(enchantsSection.toString());
 
         for (final String enchantName : enchantsSection.getKeys(false)) {
             final Enchantment enchant = Enchantment.getByName(enchantName);
@@ -31,6 +34,12 @@ public class EnchantsParser {
             }
 
             final int enchantLevel = enchantsSection.getInt(enchantName);
+
+            logger.warning(itemStackBuilder.getItemStack().getType().name());
+
+            logger.warning(enchant.toString());
+            logger.warning(enchant.getKey().toString());
+            logger.warning(enchant.canEnchantItem(new ItemStack(Material.FISHING_ROD)) + "");
 
             itemStackBuilder.enchant(enchant, enchantLevel);
         }
