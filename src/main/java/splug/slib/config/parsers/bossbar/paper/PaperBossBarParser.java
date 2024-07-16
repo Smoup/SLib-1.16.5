@@ -45,7 +45,7 @@ public class PaperBossBarParser {
 
     @Nullable
     private static BossBar.Overlay parseBarOverlay(ConfigurationSection section, Logger logger) {
-        final String styleKey = section.getString("style");
+        final String styleKey = section.getString("overlay");
         if (styleKey == null) {
             logger.warning(("§f[§6Config§f] [§6BossBarParser§f] §cНе обнаружено значение §6overlay " +
                     "§f| Добавьте его | путь:§6%s").formatted(section.getCurrentPath()));
