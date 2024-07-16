@@ -211,16 +211,32 @@ potion-effects:
 
 # Настройки босс-бара
 
+## Bukkit (org.bukkit.boss.BossBar)
 ```yaml
   boss-bar:
     color: 'RED'
     style: 'SOLID'
-    bar-flags:
+    flags:
       - 'PLAY_BOSS_MUSIC'
 ```
 
-| `ключ`             | `пример значения`                        | `Дополнительная информция`                                                                   |
-|--------------------|------------------------------------------|----------------------------------------------------------------------------------------------|
-| boss-bar.color     | 'RED'                                    | Список цветов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html) |
-| boss-bar.style     | 'SOLID'                                  | Список стилей [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarStyle.html) | 
-| boss-bar.bar-flags | - 'PLAY_BOSS_MUSIC' <br/> - 'DARKEN_SKY' | Список флагов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarFlag.html)  |
+| `ключ`         | `пример значения`                        | `Дополнительная информция`                                                                   |
+|----------------|------------------------------------------|----------------------------------------------------------------------------------------------|
+| boss-bar.color | 'RED'                                    | Список цветов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html) |
+| boss-bar.style | 'SOLID'                                  | Список стилей [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarStyle.html) | 
+| boss-bar.flags | - 'PLAY_BOSS_MUSIC' <br/> - 'DARKEN_SKY' | Список флагов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarFlag.html)  |
+
+## Paper (net.kyori.adventure.bossbar.BossBar)
+```yaml
+   boss-bar:
+     color: 'RED'
+     overlay: 'PROGRESS'
+     flags:
+       - 'DARKEN_SCREEN'
+```
+
+| `ключ`           | `пример значения`                           | `Дополнительная информция`                                                                                                               |
+|------------------|---------------------------------------------|------------------------------------------------------------------------------------------------------------------------------------------|
+| boss-bar.color   | 'RED'                                       | Список цветов [Клик](https://github.com/KyoriPowered/adventure/blob/main/4/api/src/main/java/net/kyori/adventure/bossbar/BossBar.java)   |
+| boss-bar.overlay | 'PROGRESS'                                  | Список оверлеев [Клик](https://github.com/KyoriPowered/adventure/blob/main/4/api/src/main/java/net/kyori/adventure/bossbar/BossBar.java) | 
+| boss-bar.flags   | - 'DARKEN_SCREEN' <br/> - 'PLAY_BOSS_MUSIC' | Список флагов [Клик](https://github.com/KyoriPowered/adventure/blob/main/4/api/src/main/java/net/kyori/adventure/bossbar/BossBar.java)   |

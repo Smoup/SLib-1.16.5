@@ -52,9 +52,19 @@ item-shovel:
 
 
 
-
+#Bukkit
+any-section-0:
   boss-bar:
     color: 'RED'
     style: 'SOLID'
-    bar-flags:
+    flags:
       - 'PLAY_BOSS_MUSIC'
+
+
+#Paper
+any-section-1:
+  boss-bar:
+    color: 'RED'
+    overlay: 'PROGRESS'
+    flags:
+      - 'DARKEN_SCREEN'

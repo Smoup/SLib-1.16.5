@@ -1,4 +1,4 @@
-package splug.slib.config.parsers.bossbar;
+package splug.slib.config.parsers.bossbar.bukkit;
 
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
@@ -15,15 +15,15 @@ import java.util.logging.Logger;
 
 @SuppressWarnings("unused")
 @UtilityClass
-public class BossBarParser {
+public class BukkitBossBarParser {
 
     @Nullable
-    public static BossBarSettings parse(@NonNull ConfigurationSection section, Logger logger) {
+    public static BukkitBossBarSettings parse(@NonNull ConfigurationSection section, Logger logger) {
         final BarColor barColor = parseBarColor(section, logger);
         final BarStyle barStyle = parseBarStyle(section, logger);
         final Set<BarFlag> barFlags = parseBarFlags(section, logger);
         if (barColor == null || barStyle == null) return null;
-        return new BossBarSettings(barColor, barStyle, barFlags);
+        return new BukkitBossBarSettings(barColor, barStyle, barFlags);
     }
 
     @Nullable
@@ -62,7 +62,7 @@ public class BossBarParser {
 
     private static Set<BarFlag> parseBarFlags(ConfigurationSection section, Logger logger) {
         final Set<BarFlag> out = new HashSet<>();
-        final List<String> barFlagsKeys = section.getStringList("bar-flags");
+        final List<String> barFlagsKeys = section.getStringList("flags");
         for (final String flagKey : barFlagsKeys) {
             try {
                 out.add(BarFlag.valueOf(flagKey));
