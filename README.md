@@ -192,6 +192,7 @@ potion-effects:
 > пример: `STRONG_HEALING`
 
 
+
 # Настройки для меню
 
 ### Основные
@@ -205,3 +206,21 @@ potion-effects:
 |------------|-------------------------|-----------------------------------------|--------------------------------------------------------------------------------------------------------------|
 | menu-slot  | 0                       | 15                                      | Номер слота в меню `0-53`                                                                                    |
 | menu-slots | 0                       | - '0-4' <br/> - '34-34' <br/> - '45-53' | Значения не должны превышать `0-53` предметы будут во <br/> всех слотах которые входят в указанные интервалы | 
+
+
+
+# Настройки босс-бара
+
+```yaml
+  boss-bar:
+    color: 'RED'
+    style: 'SOLID'
+    bar-flags:
+      - 'PLAY_BOSS_MUSIC'
+```
+
+| `ключ`             | `пример значения`                        | `Дополнительная информция`                                                                   |
+|--------------------|------------------------------------------|----------------------------------------------------------------------------------------------|
+| boss-bar.color     | 'RED'                                    | Список цветов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarColor.html) |
+| boss-bar.style     | 'SOLID'                                  | Список стилей [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarStyle.html) | 
+| boss-bar.bar-flags | - 'PLAY_BOSS_MUSIC' <br/> - 'DARKEN_SKY' | Список флагов [Клик](https://hub.spigotmc.org/javadocs/spigot/org/bukkit/boss/BarFlag.html)  |
