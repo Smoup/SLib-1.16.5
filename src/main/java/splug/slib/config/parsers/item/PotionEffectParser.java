@@ -21,7 +21,7 @@ public class PotionEffectParser {
     public static Set<PotionEffect> parse(@NonNull ConfigurationSection itemSection, Logger logger) {
         final ConfigurationSection potionsSection = itemSection.getConfigurationSection("potion-effects");
         if (potionsSection == null) {
-            logger.info(("§f[§6Config§f] [§6PotionEffectParser§f] §cНеудачная обработка секции конфига с эффектами §6potion-effects §f|" +
+            logger.warning(("§f[§6Config§f] [§6PotionEffectParser§f] §cНеудачная обработка секции конфига с эффектами §6potion-effects §f|" +
                     " Причина: секция отсутствует | путь: %s")
                     .formatted(itemSection.getCurrentPath()));
             return Set.of();
@@ -49,7 +49,7 @@ public class PotionEffectParser {
     private static PotionEffect handlePotion(ConfigurationSection potionSection, Logger logger) {
         final PotionEffectType potionEffectType = PotionEffectType.getByName(potionSection.getName());
         if (potionEffectType == null) {
-            logger.info(("§f[§6Config§f] [§6PotionEffectParser§f] §cНеизвестный тип эффекта §6%s §f|" +
+            logger.warning(("§f[§6Config§f] [§6PotionEffectParser§f] §cНеизвестный тип эффекта §6%s §f|" +
                     " Используйте тип эффекта из org.bukkit.potion.PotionEffectType | путь: %s")
                     .formatted(potionSection.getName(), potionSection.getCurrentPath()));
             return null;
@@ -57,7 +57,7 @@ public class PotionEffectParser {
 
         final int duration = potionSection.getInt("duration") * 20;
         if (duration == 0) {
-            logger.info(("§f[§6Config§f] [§6PotionEffectParser§f] §cДлительность эффекта §6%s §cравна §b0 §f|" +
+            logger.warning(("§f[§6Config§f] [§6PotionEffectParser§f] §cДлительность эффекта §6%s §cравна §b0 §f|" +
                     " Используйте значение больше §b0 §f| путь: %s")
                     .formatted(potionSection.getName(), potionSection.getCurrentPath()));
             return null;
@@ -65,7 +65,7 @@ public class PotionEffectParser {
 
         final int amplifier = potionSection.getInt("amplifier");
         if (amplifier == 0) {
-            logger.info(("§f[§6Config§f] [§6PotionEffectParser§f] §cУровень эффекта §6%s §cравен §b0 §f|" +
+            logger.warning(("§f[§6Config§f] [§6PotionEffectParser§f] §cУровень эффекта §6%s §cравен §b0 §f|" +
                     " Используйте значение больше §b0 §f| путь: %s")
                     .formatted(potionSection.getName(), potionSection.getCurrentPath()));
             return null;

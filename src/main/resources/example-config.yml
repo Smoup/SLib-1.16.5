@@ -43,3 +43,18 @@ item-shovel:
       amplifier: 3 #уровень эффекта
       ambient: true #default - true
       particles: true #default - true
+
+
+
+
+
+
+
+
+
+
+  boss-bar:
+    color: 'RED'
+    style: 'SOLID'
+    bar-flags:
+      - 'PLAY_BOSS_MUSIC'
