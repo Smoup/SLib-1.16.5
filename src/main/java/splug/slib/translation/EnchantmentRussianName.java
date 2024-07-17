@@ -3,6 +3,7 @@ package splug.slib.translation;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.enchantments.Enchantment;
+import splug.slib.utils.strings.StringsSimilarity;
 
 //Для 1.16.5
 
@@ -55,6 +56,24 @@ public enum EnchantmentRussianName {
 
         this.enchantment = enchantment;
         this.russianName = russianName;
+    }
+
+    @NonNull
+    public static EnchantmentRussianName mostSimilar(String similar) {
+        final char[] charsToCheck = similar.toCharArray();
+        double similarPercent = 0;
+        EnchantmentRussianName target = PROTECTION_ENVIRONMENTAL;
+
+        for (final EnchantmentRussianName value : values()) {
+            final double percent = StringsSimilarity
+                    .calculate(charsToCheck, value.russianName.toCharArray());
+            if (percent > similarPercent) {
+                target = value;
+                similarPercent = percent;
+            }
+        }
+
+        return target;
     }
 
     @NonNull

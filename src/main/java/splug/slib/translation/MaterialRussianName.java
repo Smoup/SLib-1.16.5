@@ -3,6 +3,7 @@ package splug.slib.translation;
 import lombok.Getter;
 import lombok.NonNull;
 import org.bukkit.Material;
+import splug.slib.utils.strings.StringsSimilarity;
 
 @Getter @SuppressWarnings("unused")
 public enum MaterialRussianName {
@@ -1074,6 +1075,24 @@ public enum MaterialRussianName {
     MaterialRussianName(Material material, String russianName) {
         this.material = material;
         this.russianName = russianName;
+    }
+
+    @NonNull
+    public static MaterialRussianName mostSimilar(String similar) {
+        final char[] charsToCheck = similar.toCharArray();
+        double similarPercent = 0;
+        MaterialRussianName target = AIR;
+
+        for (final MaterialRussianName value : values()) {
+            final double percent = StringsSimilarity
+                    .calculate(charsToCheck, value.russianName.toCharArray());
+            if (percent > similarPercent) {
+                target = value;
+                similarPercent = percent;
+            }
+        }
+
+        return target;
     }
 
     @NonNull
