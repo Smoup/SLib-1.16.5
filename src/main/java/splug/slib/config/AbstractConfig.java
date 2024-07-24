@@ -1,6 +1,7 @@
 package splug.slib.config;
 
 import lombok.Data;
+import net.kyori.adventure.text.Component;
 import org.bukkit.configuration.ConfigurationSection;
 import org.bukkit.configuration.file.FileConfiguration;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -75,5 +76,10 @@ public abstract class AbstractConfig<T extends JavaPlugin> {
     public String getMsgByKey(String key) {
         return messages.get(key) != null ? messages.get(key)
                 : "§8[§6%s§8] §cНезарегистрированное в конфиге сообщение §f| ключ: %s".formatted(pluginName, key);
+    }
+
+    public Component getCompMsgByKey(String key) {
+        return Component.text(messages.get(key) != null ? messages.get(key)
+                : "§8[§6%s§8] §cНезарегистрированное в конфиге сообщение §f| ключ: %s".formatted(pluginName, key));
     }
 }
