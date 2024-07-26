@@ -47,14 +47,14 @@ public class Schematic {
             for (int z = 0; z < zSize; z++, id++) {
                 for (int x = 0; x < xSize; x++, id++) {
                     final int structureId = blocks[id];
+                    final Location toEdit = targetLocation.clone().add(x, y, z);
                     log("-------------------------");
                     log("id:%s structureId:%s".formatted(id, structureId));
+                    log("x:%.1f z:%.1f y:%.1f".formatted(toEdit.getX(), toEdit.getZ(), toEdit.getY()));
                     if (structureId == -1) continue;
-                    final Location toEdit = targetLocation.clone().add(x, y, z);
                     final Block block = toEdit.getBlock();
                     pastedSchem.addNew(toEdit, block.getType());
                     block.setType(structure.get(structureId));
-                    log("x:%s z:%s y:%s".formatted(toEdit.getX(), toEdit.getZ(), toEdit.getY()));
                 }
             }
         }
