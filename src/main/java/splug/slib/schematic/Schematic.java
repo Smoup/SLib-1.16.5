@@ -2,6 +2,7 @@ package splug.slib.schematic;
 
 import lombok.EqualsAndHashCode;
 import lombok.ToString;
+import org.bukkit.Bukkit;
 import org.bukkit.Location;
 import org.bukkit.Material;
 import org.bukkit.block.Block;
@@ -42,20 +43,26 @@ public class Schematic {
     public @NotNull PastedSchematic paste(Location loc) {
         final PastedSchematic pastedSchem = new PastedSchematic();
         final Location targetLocation = loc.clone().add(offsetVector);
-        int id = 0;
-        for (int y = 0; y < ySize; y++, id++) {
+        for (int y = 0, id = 0; y < ySize; y++, id++) {
             for (int z = 0; z < zSize; z++, id++) {
                 for (int x = 0; x < xSize; x++, id++) {
                     final int structureId = blocks[id];
+                    log("-------------------------");
+                    log("id:%s structureId:%s".formatted(id, structureId));
                     if (structureId == -1) continue;
                     final Location toEdit = targetLocation.clone().add(x, y, z);
                     final Block block = toEdit.getBlock();
                     pastedSchem.addNew(toEdit, block.getType());
                     block.setType(structure.get(structureId));
+                    log("x:%s z:%s y:%s".formatted(toEdit.getX(), toEdit.getZ(), toEdit.getY()));
                 }
             }
         }
 
         return pastedSchem;
+    }
+
+    private void log(Object o) {
+        Bukkit.getLogger().info(String.valueOf(o));
     }
 }
