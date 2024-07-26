@@ -43,8 +43,8 @@ public class Schematic {
     public @NotNull PastedSchematic paste(Location loc) {
         final PastedSchematic pastedSchem = new PastedSchematic();
         final Location targetLocation = loc.clone().add(offsetVector);
-        for (int y = 0, id = 0; y < ySize; y++, id++) {
-            for (int z = 0; z < zSize; z++, id++) {
+        for (int y = 0, id = 0; y < ySize; y++) {
+            for (int z = 0; z < zSize; z++) {
                 for (int x = 0; x < xSize; x++, id++) {
                     final int structureId = blocks[id];
                     final Location toEdit = targetLocation.clone().add(x, y, z);
