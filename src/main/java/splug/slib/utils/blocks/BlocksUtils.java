@@ -8,7 +8,7 @@ import java.util.HashSet;
 import java.util.Set;
 
 @UtilityClass @SuppressWarnings("unused")
-public class Blocks {
+public class BlocksUtils {
     public static Set<Block> getNearbyBlocks(Location center, int radius) {
         final Set<Block> blocks = new HashSet<>();
         for (double y = (center.getY() - radius); y <= center.getY() + radius; y++) {
