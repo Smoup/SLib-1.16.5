@@ -15,6 +15,7 @@ public class JsonUtils {
     }
 
     public static Collection<String> stringToStringsCollection(String string) {
+        if (string == null) return Collections.emptyList();
         final Type collectionType = new TypeToken<Collection<String>>() {}.getType();
         try {
             return new Gson().fromJson(string, collectionType);
