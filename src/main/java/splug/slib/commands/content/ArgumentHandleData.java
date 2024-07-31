@@ -7,7 +7,7 @@ import splug.slib.commands.data.CommandData;
 @Data
 public final class ArgumentHandleData<T extends CommandData> {
     private final CommandSender sender;
-    private final String[] args;
+    private String[] args;
     private final T data;
     private final int ordinal;
     private final boolean last;

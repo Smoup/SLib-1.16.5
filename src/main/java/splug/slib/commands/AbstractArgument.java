@@ -69,9 +69,9 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         while (contentIterator.hasNext()) {
             final ArgumentContent<T> content = contentIterator.next();
             try {
-                content.handleArgumentData(
-                    new ArgumentHandleData<>(sender, args, data, ordinal, contentIterator.hasNext())
-                );
+                final ArgumentHandleData<T> handleData = new ArgumentHandleData<>(sender, args, data, ordinal, contentIterator.hasNext());
+                content.handleArgumentData(handleData);
+                args = handleData.getArgs();
             } catch (HandleArgumentDataException exception) {
                 if (exception.isSendUsage()) {
                     throw new ArgumentUseException();
