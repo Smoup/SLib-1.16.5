@@ -1,6 +1,8 @@
 package splug.slib.commands.content;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.data.CommandData;
@@ -8,7 +10,7 @@ import splug.slib.commands.data.CommandData;
 import java.util.Set;
 import java.util.stream.Collectors;
 
-@Data
+@Data @ToString @EqualsAndHashCode
 public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends CommandData> implements ArgumentContent<T> {
 
     private final P plugin;

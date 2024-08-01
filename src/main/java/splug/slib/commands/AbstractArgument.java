@@ -1,6 +1,8 @@
 package splug.slib.commands;
 
 import lombok.Data;
+import lombok.EqualsAndHashCode;
+import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,7 +15,7 @@ import splug.slib.commands.exception.HandleArgumentDataException;
 
 import java.util.*;
 
-@Data @SuppressWarnings("unused")
+@Data @SuppressWarnings("unused") @ToString @EqualsAndHashCode
 public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandData> {
 
     private final P plugin;
@@ -81,17 +83,11 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
 
     @SuppressWarnings("unchecked")
     private boolean commandExecuteThis(CommandSender sender, String[] args, T data) {
-        log("----------------------------------------------------------");
-        log(Arrays.toString(args));
         try {
             if (this instanceof ExecutableArgument<?>) {
                 final ExecutableArgument<T> executableArgument = (ExecutableArgument<T>) this;
                 executableArgument.execute(sender, args, data);
-                log(executableArgument.toString());
-                log(Arrays.toString(this.contentSet.toArray()));
             } else {
-                log(Arrays.toString(this.contentSet.toArray()));
-                log("not executable");
                 return false;
             }
         } catch (ClassCastException exception) {
@@ -101,14 +97,29 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         return true;
     }
 
+    //DEBUG
     private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
         for (final AbstractArgument<P, T> argument : argumentSet) {
+            log("-----------------------------------------------------------");
+            log(argument.toString());
             if (argument.isNotTargetArgument(args[ordinal])) continue;
+            log("is target " + args[ordinal]);
             if (argument.senderNoPermission(sender)) return true;
-            if (argument.commandExecute(sender, args, data)) return true;
+            if (argument.commandExecute(sender, args, data)) {
+                return true;
+            }
         }
         return false;
     }
+
+//    private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
+//        for (final AbstractArgument<P, T> argument : argumentSet) {
+//            if (argument.isNotTargetArgument(args[ordinal])) continue;
+//            if (argument.senderNoPermission(sender)) return true;
+//            if (argument.commandExecute(sender, args, data)) return true;
+//        }
+//        return false;
+//    }
 
     protected List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == ordinal) {
