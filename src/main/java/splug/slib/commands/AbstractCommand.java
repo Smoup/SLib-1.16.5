@@ -7,7 +7,9 @@ import lombok.ToString;
 import org.bukkit.command.*;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ExecutableArgument;
+import splug.slib.commands.content.ArgumentHandleData;
 import splug.slib.commands.data.CommandData;
+import splug.slib.commands.exception.ArgsUpdateException;
 import splug.slib.commands.exception.ArgumentUseException;
 import splug.slib.commands.usage.CommandUsageExecutor;
 
@@ -52,6 +54,9 @@ public abstract class AbstractCommand<P extends JavaPlugin, T extends CommandDat
             return commandExecute(sender, args, getNewData());
         } catch (ArgumentUseException e) {
             sendUsageMSG(sender);
+        } catch (ArgsUpdateException e) {
+            final ArgumentHandleData<?> handleData = e.getHandleData();
+            return onCommand(handleData.getSender(), command, label, handleData.getArgs());
         }
         return true;
     }
