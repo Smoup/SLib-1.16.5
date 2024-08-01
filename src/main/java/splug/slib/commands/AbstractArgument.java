@@ -1,6 +1,7 @@
 package splug.slib.commands;
 
 import lombok.Data;
+import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ExecutableArgument;
@@ -80,11 +81,17 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
 
     @SuppressWarnings("unchecked")
     private boolean commandExecuteThis(CommandSender sender, String[] args, T data) {
+        log("----------------------------------------------------------");
+        log(Arrays.toString(args));
         try {
             if (this instanceof ExecutableArgument<?>) {
                 final ExecutableArgument<T> executableArgument = (ExecutableArgument<T>) this;
                 executableArgument.execute(sender, args, data);
+                log(executableArgument.toString());
+                log(Arrays.toString(this.contentSet.toArray()));
             } else {
+                log(Arrays.toString(this.contentSet.toArray()));
+                log("not executable");
                 return false;
             }
         } catch (ClassCastException exception) {
@@ -148,5 +155,9 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         if (sender.hasPermission(permission)) return false;
         sender.sendMessage(noPermissionMessage);
         return true;
+    }
+
+    private void log(Object o) {
+        Bukkit.getLogger().info(String.valueOf(o));
     }
 }
