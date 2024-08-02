@@ -19,9 +19,7 @@ public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends Co
     private Set<String> args;
 
     public AbstractArgumentContent(P plugin, String permission, String... args) {
-        this.plugin = plugin;
-        this.permission = permission;
-        this.args = Set.of(args);
+        this(plugin, permission, Set.of(args));
     }
 
     public AbstractArgumentContent(P plugin, String permission, Set<String> args) {
@@ -32,10 +30,28 @@ public abstract class AbstractArgumentContent<P extends JavaPlugin, T extends Co
 
     @Override
     public Set<String> getArgs(String prefix) {
+        final String lowerCasePrefix = prefix.toLowerCase();
         if (args == null) return null;
         return args.stream()
-                .filter(s -> s.toLowerCase().startsWith(prefix.toLowerCase()))
+                .filter(s -> s.toLowerCase().startsWith(lowerCasePrefix))
                 .collect(Collectors.toSet());
+    }
+
+    @Override
+    public Set<String> getTapCompleteArgs(String prefix) {
+        final String lowerCasePrefix = prefix.toLowerCase();
+        if (args == null) return null;
+        return args.stream()
+                .filter(s -> s.toLowerCase().startsWith(lowerCasePrefix))
+                .collect(Collectors.toSet());
+    }
+
+    @Override
+    public boolean isTargetArg(String s) {
+        for (final String arg : getArgs()) {
+            if (arg.equalsIgnoreCase(s)) return true;
+        }
+        return false;
     }
 
     @Override

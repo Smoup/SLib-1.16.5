@@ -21,4 +21,25 @@ public class BlocksUtils {
         }
         return blocks;
     }
+
+    public static Set<Location> getCubeEdges(Location center, int radius) {
+        final Set<Location> edges = new HashSet<>();
+        final int cx = center.getBlockX();
+        final int cy = center.getBlockY();
+        final int cz = center.getBlockZ();
+
+        for (int x = -radius; x <= radius; x++) {
+            for (int y = -radius; y <= radius; y++) {
+                for (int z = -radius; z <= radius; z++) {
+                    if ((Math.abs(x) == radius && Math.abs(y) == radius) ||
+                            (Math.abs(x) == radius && Math.abs(z) == radius) ||
+                            (Math.abs(y) == radius && Math.abs(z) == radius)) {
+                        edges.add(new Location(center.getWorld(), cx + x, cy + y, cz + z));
+                    }
+                }
+            }
+        }
+
+        return edges;
+    }
 }

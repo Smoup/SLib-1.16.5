@@ -5,6 +5,7 @@ import lombok.EqualsAndHashCode;
 import lombok.ToString;
 import org.bukkit.Bukkit;
 import org.bukkit.command.CommandSender;
+import org.bukkit.entity.Player;
 import org.bukkit.plugin.java.JavaPlugin;
 import splug.slib.commands.args.ExecutableArgument;
 import splug.slib.commands.content.ArgumentContent;
@@ -14,6 +15,7 @@ import splug.slib.commands.exception.ArgumentUseException;
 import splug.slib.commands.exception.HandleArgumentDataException;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 @Data @SuppressWarnings("unused") @ToString @EqualsAndHashCode
 public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandData> {
@@ -97,29 +99,14 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         return true;
     }
 
-    //DEBUG
     private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
         for (final AbstractArgument<P, T> argument : argumentSet) {
-            log("-----------------------------------------------------------");
-            log(argument.toString());
-            if (argument.isNotTargetArgument(args[ordinal])) continue;
-            log("is target " + args[ordinal]);
+            if (!argument.isTargetArgument(args[ordinal])) continue;
             if (argument.senderNoPermission(sender)) return true;
-            if (argument.commandExecute(sender, args, data)) {
-                return true;
-            }
+            if (argument.commandExecute(sender, args, data)) return true;
         }
         return false;
     }
-
-//    private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
-//        for (final AbstractArgument<P, T> argument : argumentSet) {
-//            if (argument.isNotTargetArgument(args[ordinal])) continue;
-//            if (argument.senderNoPermission(sender)) return true;
-//            if (argument.commandExecute(sender, args, data)) return true;
-//        }
-//        return false;
-//    }
 
     protected List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == ordinal) {
@@ -134,9 +121,14 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
 
         for (final ArgumentContent<T> content : contentSet) {
             if (!content.hasPermission(sender)) continue;
-            final Set<String> contentArgs = content.getArgs(args[ordinal - 1]);
-            if (contentArgs == null) return null;
-            out.addAll(contentArgs);
+            final Set<String> contentArgs = content.getTapCompleteArgs(args[ordinal - 1]);
+            if (contentArgs == null) {
+                if (contentSet.size() == 1) return null;
+                else out.addAll(Bukkit.getOnlinePlayers()
+                        .stream().map(Player::getName).collect(Collectors.toSet()));
+            } else {
+                out.addAll(contentArgs);
+            }
         }
         return out;
     }
@@ -145,7 +137,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         final List<String> out = new ArrayList<>();
         for (final AbstractArgument<P, T> argument : argumentSet) {
             if (!sender.hasPermission(permission)) continue;
-            if (argument.isNotTargetArgument(args[ordinal])) continue;
+            if (!argument.isTargetArgumentTabComplete(args[ordinal])) continue;
             final List<String> argumentArgs = argument.tabComplete(sender, args);
             if (argumentArgs == null) return null;
             out.addAll(argumentArgs);
@@ -153,22 +145,27 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         return out;
     }
 
-    private boolean isNotTargetArgument(String arg) {
+    private boolean isTargetArgumentTabComplete(String arg) {
+        if (arg.isEmpty()) return true;
+        for (final ArgumentContent<T> content : contentSet) {
+            if (content.getArgs() == null) return true;
+            if (!content.getTapCompleteArgs(arg).isEmpty()) return true;
+        }
+        return false;
+    }
+
+    private boolean isTargetArgument(String arg) {
         if (arg.isEmpty()) return false;
         for (final ArgumentContent<T> content : contentSet) {
-            if (content.getArgs() == null) return false;
-            if (!content.getArgs(arg).isEmpty()) return false;
+            if (content.getArgs() == null) return true;
+            if (!content.isTargetArg(arg)) return true;
         }
-        return true;
+        return false;
     }
 
     protected boolean senderNoPermission(CommandSender sender) {
         if (sender.hasPermission(permission)) return false;
         sender.sendMessage(noPermissionMessage);
         return true;
-    }
-
-    private void log(Object o) {
-        Bukkit.getLogger().info(String.valueOf(o));
     }
 }

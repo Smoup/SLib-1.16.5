@@ -61,11 +61,13 @@ public class DoubleArgumentContent<P extends JavaPlugin, T extends DoubleCommand
     public Set<String> getArgs(String prefix) {
         if (getArgs() == null) return null;
         final Set<String> out = getArgs().stream()
-                .filter(s -> s.toLowerCase().startsWith(prefix.toLowerCase()))
+                .filter(s -> s.startsWith(prefix))
                 .collect(Collectors.toSet());
 
         if (!out.isEmpty()) return out;
         out.add(prefix);
         return out;
     }
+
+
 }
