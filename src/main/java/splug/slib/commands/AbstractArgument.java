@@ -55,6 +55,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         noPermissionMessage = noPermissionMessage.formatted(pluginName);
     }
 
+    //["remove", "sss"]
     protected boolean commandExecute(CommandSender sender, String[] args, T data) {
         if (args.length < ordinal) return false;
 
@@ -99,14 +100,30 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         return true;
     }
 
+    //DEBUG
     private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
         for (final AbstractArgument<P, T> argument : argumentSet) {
+            log("---------------------------------------");
+            log(argument.toString());
+            log(argument.isTargetArgument(args[ordinal]));
             if (!argument.isTargetArgument(args[ordinal])) continue;
             if (argument.senderNoPermission(sender)) return true;
-            if (argument.commandExecute(sender, args, data)) return true;
+            if (argument.commandExecute(sender, args, data)) {
+                log("executed");
+                return true;
+            }
         }
         return false;
     }
+
+//    private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
+//        for (final AbstractArgument<P, T> argument : argumentSet) {
+//            if (!argument.isTargetArgument(args[ordinal])) continue;
+//            if (argument.senderNoPermission(sender)) return true;
+//            if (argument.commandExecute(sender, args, data)) return true;
+//        }
+//        return false;
+//    }
 
     protected List<String> tabComplete(CommandSender sender, String[] args) {
         if (args.length == ordinal) {
@@ -167,5 +184,9 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         if (sender.hasPermission(permission)) return false;
         sender.sendMessage(noPermissionMessage);
         return true;
+    }
+
+    private void log(Object o) {
+        Bukkit.getLogger().info("[SLib] " + o.toString());
     }
 }
