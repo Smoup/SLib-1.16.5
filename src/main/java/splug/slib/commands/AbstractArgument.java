@@ -189,8 +189,8 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
                 log("---------------------=isTargetArgument+END=----------------------------");
                 return true;
             }
-            if (!content.isTargetArg(arg)) {
-                log("!content.isTargetArg(arg)");
+            if (content.isTargetArg(arg)) {
+                log("content.isTargetArg(arg)");
                 log("---------------------=isTargetArgument+END=----------------------------");
                 return true;
             }
