@@ -104,9 +104,12 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     private boolean commandExecuteNext(CommandSender sender, String[] args, T data) {
         for (final AbstractArgument<P, T> argument : argumentSet) {
             log("---------------------------------------");
-            log(argument.toString());
-            log(argument.isTargetArgument(args[ordinal]));
-            if (!argument.isTargetArgument(args[ordinal])) continue;
+            for (ArgumentContent<T> tArgumentContent : argument.getContentSet()) {
+                log(Arrays.toString(tArgumentContent.getArgs().toArray()));
+            }
+            boolean isTargetArgument = argument.isTargetArgument(args[ordinal]);
+            log(isTargetArgument);
+            if (!isTargetArgument) continue;
             if (argument.senderNoPermission(sender)) return true;
             if (argument.commandExecute(sender, args, data)) {
                 log("executed");
@@ -172,13 +175,38 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     }
 
     private boolean isTargetArgument(String arg) {
-        if (arg.isEmpty()) return true;
-        for (final ArgumentContent<T> content : contentSet) {
-            if (content.getArgs() == null) return true;
-            if (!content.isTargetArg(arg)) return true;
+        log("---------------------=isTargetArgument+Start=----------------------------");
+        log("ARG: \"%s\"".formatted(arg));
+        if (arg.isEmpty()) {
+            log("arg is empty");
+            log("---------------------=isTargetArgument+END=----------------------------");
+            return true;
         }
+        for (final ArgumentContent<T> content : contentSet) {
+            if (content.getArgs() == null) {
+                log("content.getArgs() == null");
+                log("---------------------=isTargetArgument+END=----------------------------");
+                return true;
+            }
+            if (!content.isTargetArg(arg)) {
+                log("!content.isTargetArg(arg)");
+                log("---------------------=isTargetArgument+END=----------------------------");
+                return true;
+            }
+        }
+        log("return false");
+        log("---------------------=isTargetArgument+END=----------------------------");
         return false;
     }
+
+//    private boolean isTargetArgument(String arg) {
+//        if (arg.isEmpty()) return true;
+//        for (final ArgumentContent<T> content : contentSet) {
+//            if (content.getArgs() == null) return true;
+//            if (!content.isTargetArg(arg)) return true;
+//        }
+//        return false;
+//    }
 
     protected boolean senderNoPermission(CommandSender sender) {
         if (sender.hasPermission(permission)) return false;
