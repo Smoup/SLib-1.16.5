@@ -1,6 +1,9 @@
 package splug.slib.menu;
 
 import lombok.Data;
+import org.bukkit.Bukkit;
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
 import org.bukkit.inventory.Inventory;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -13,14 +16,26 @@ import java.util.HashMap;
 import java.util.Map;
 
 @Data @SuppressWarnings("unused")
-public class MenuHandler {
+public class MenuHandler implements Listener {
 
     private final Map<Inventory, AbstractMenu<?>> menusByInventory = new HashMap<>();
     private final Map<String, AbstractMenu<?>> menusByName = new HashMap<>();
 
+    public MenuHandler() {
+    }
+
+    public MenuHandler(JavaPlugin plugin) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+    }
+
     public void addMenu(String menuKey, AbstractMenu<?> menu) {
         menusByInventory.put(menu.getInventory(), menu);
         menusByName.put(menuKey, menu);
+    }
+
+    @EventHandler
+    private void on(InventoryClickEvent event) {
+        handleClick(event);
     }
 
     public void handleClick(InventoryClickEvent event) {
