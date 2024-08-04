@@ -105,6 +105,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
         for (final AbstractArgument<P, T> argument : argumentSet) {
             log("---------------------------------------");
             for (ArgumentContent<T> tArgumentContent : argument.getContentSet()) {
+                if (tArgumentContent.getArgs() == null) continue;
                 log(Arrays.toString(tArgumentContent.getArgs().toArray()));
             }
             boolean isTargetArgument = argument.isTargetArgument(args[ordinal]);
