@@ -33,6 +33,11 @@ public class MenuHandler implements Listener {
         menusByName.put(menuKey, menu);
     }
 
+    public void removeMenu(String menuKey, AbstractMenu<?> menu) {
+        menusByName.remove(menuKey);
+        menusByInventory.remove(menu.getInventory());
+    }
+
     @EventHandler
     private void on(InventoryClickEvent event) {
         handleClick(event);
