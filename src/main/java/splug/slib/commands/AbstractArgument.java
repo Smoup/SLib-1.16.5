@@ -155,7 +155,7 @@ public abstract class AbstractArgument<P extends JavaPlugin, T extends CommandDa
     }
 
     private boolean isTargetArgument(String arg) {
-        if (arg.isEmpty()) return false;
+        if (arg.isEmpty()) return true;
         for (final ArgumentContent<T> content : contentSet) {
             if (content.getArgs() == null) return true;
             if (!content.isTargetArg(arg)) return true;
