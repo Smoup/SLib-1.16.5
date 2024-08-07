@@ -4,6 +4,7 @@ import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
+import org.bukkit.World;
 
 @UtilityClass @SuppressWarnings("unused")
 public class LocationUtil {
@@ -38,7 +39,23 @@ public class LocationUtil {
         return sb.toString();
     }
 
+    @Deprecated
     public static Location getCenter(Location loc) {
+        return getBlockCenter(loc);
+    }
+
+    public static Location getBlockCenter(Location loc) {
         return new Location(loc.getWorld(), loc.getX() + 0.5, loc.getY(), loc.getZ() + 0.5);
+    }
+
+    public static Location getCenter(Location loc1, Location loc2) {
+        return getCenter(loc1.getWorld(), loc1.getX(), loc1.getY(), loc1.getZ(), loc2.getX(), loc2.getY(), loc2.getZ());
+    }
+
+    public static Location getCenter(World world, double x1, double y1, double z1, double x2, double y2, double z2) {
+        double centerX = (x1 + x2) / 2;
+        double centerY = (y1 + y2) / 2;
+        double centerZ = (z1 + z2) / 2;
+        return new Location(world, centerX, centerY, centerZ);
     }
 }
