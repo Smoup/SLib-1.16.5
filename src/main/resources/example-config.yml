@@ -87,3 +87,40 @@ any-section-1:
       x: 4
       y: 4
       z: 1
+
+
+
+
+
+menu:
+  size: 54
+  title: "Название"
+  content:
+    item-1:
+      menu-slot: 53
+      material: Stone
+      close-button: true
+      click-commands:
+        - 'shop'
+
+    back-ground-item-1:
+      menu-slots:
+        - '2-3'
+        - '5-6'
+        - '18-18'
+        - '26-27'
+        - '35-35'
+        - '47-51'
+      material: 'MAGENTA_STAINED_GLASS_PANE'
+      display-name: "§c§l"
+
+    back-ground-item-2:
+      menu-slots:
+        - '0-1'
+        - '7-9'
+        - '17-17'
+        - '36-36'
+        - '44-46'
+        - '52-52'
+      material: 'PURPLE_STAINED_GLASS_PANE'
+      display-name: "§c§l"

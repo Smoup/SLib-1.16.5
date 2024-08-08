@@ -1,6 +1,7 @@
 package splug.slib.menu;
 
 import lombok.Data;
+import net.kyori.adventure.text.Component;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -23,9 +24,14 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
 
     private Inventory inventory;
 
+    @Deprecated
     public AbstractMenu(T plugin, int size, String title) {
+        this(plugin, size, Component.text(title));
+    }
+
+    public AbstractMenu(T plugin, int size, Component title) {
         this.plugin = plugin;
-        this.title = title;
+        this.title = title.toString();
 
         setInventory(Bukkit.createInventory(null, size, title));
     }
@@ -43,6 +49,12 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     }
 
     public void addButton(int slot, AbstractMenuButton button) {
+        if (slot > inventory.getSize() - 1) {
+            log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
+                    .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+        }
+        slot = inventory.getSize() - 1;
+
         if (buttons.containsKey(slot)) {
             log("§cСлот §b%d §cиспользован дважды".formatted(slot));
         }
@@ -51,7 +63,13 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     }
 
     public void addButtons(AbstractMenuButton button, int... slots) {
-        for (final int slot : slots) {
+        for (int slot : slots) {
+            if (slot > inventory.getSize() - 1) {
+                log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
+                        .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+            }
+            slot = inventory.getSize() - 1;
+
             if (buttons.containsKey(slot)) {
                 log("§cСлот §b%d §cиспользован дважды".formatted(slot));
             }
@@ -61,16 +79,31 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
     }
 
     public void addButtonForced(int slot, AbstractMenuButton button) {
+        if (slot > inventory.getSize() - 1) {
+            log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
+                    .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+        }
+        slot = inventory.getSize() - 1;
         buttons.put(slot, button);
     }
 
     public void addButtonsForced(AbstractMenuButton button, int... slots) {
-        for (final int slot : slots) {
+        for (int slot : slots) {
+            if (slot > inventory.getSize() - 1) {
+                log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
+                        .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+            }
+            slot = inventory.getSize() - 1;
             buttons.put(slot, button);
         }
     }
 
     public void addEditableSlot(int slot) {
+        if (slot > inventory.getSize() - 1) {
+            log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
+                    .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+        }
+        slot = inventory.getSize() - 1;
         editableSlots.add(slot);
     }
 
