@@ -7,7 +7,7 @@ import org.bukkit.inventory.ItemStack;
 @Data
 public abstract class AbstractMenuButton {
 
-    private final ItemStack itemStack;
+    private ItemStack itemStack;
 
     public AbstractMenuButton(ItemStack itemStack) {
         this.itemStack = itemStack;
