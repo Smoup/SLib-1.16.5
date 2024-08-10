@@ -45,6 +45,14 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
         if (button != null) inventory.setItem(slot, button.getItemStack());
     }
 
+    public void fill(Set<Integer> slots) {
+        slots.forEach(this::fill);
+    }
+
+    public void fill(Integer... slots) {
+        fill(Set.of(slots));
+    }
+
     public void onClick(InventoryClickEvent event) {
         if (!editableSlots.contains((event.getSlot()))) event.setCancelled(true);
 
