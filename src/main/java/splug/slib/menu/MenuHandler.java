@@ -11,6 +11,7 @@ import splug.slib.commands.AbstractArgument;
 import splug.slib.commands.content.AbstractArgumentContent;
 import splug.slib.commands.data.CommandData;
 import splug.slib.commands.samples.content.string.StringContent;
+import splug.slib.utils.cache.CacheMap;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -18,14 +19,29 @@ import java.util.Map;
 @Data @SuppressWarnings("unused")
 public class MenuHandler implements Listener {
 
-    private final Map<Inventory, AbstractMenu<?>> menusByInventory = new HashMap<>();
-    private final Map<String, AbstractMenu<?>> menusByName = new HashMap<>();
+    private final Map<Inventory, AbstractMenu<?>> menusByInventory;
+    private final Map<String, AbstractMenu<?>> menusByName;
 
     public MenuHandler() {
+        menusByInventory = new HashMap<>();
+        menusByName = new HashMap<>();
     }
 
     public MenuHandler(JavaPlugin plugin) {
         Bukkit.getPluginManager().registerEvents(this, plugin);
+        menusByInventory = new HashMap<>();
+        menusByName = new HashMap<>();
+    }
+
+    public MenuHandler(int size) {
+        menusByInventory = new CacheMap<>(size);
+        menusByName = new CacheMap<>(size);
+    }
+
+    public MenuHandler(JavaPlugin plugin, int size) {
+        Bukkit.getPluginManager().registerEvents(this, plugin);
+        menusByInventory = new CacheMap<>(size);
+        menusByName = new CacheMap<>(size);
     }
 
     public void addMenu(String menuKey, AbstractMenu<?> menu) {
