@@ -65,8 +65,8 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
         if (slot > inventory.getSize() - 1) {
             log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
                     .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+            slot = inventory.getSize() - 1;
         }
-        slot = inventory.getSize() - 1;
 
         if (buttons.containsKey(slot)) {
             log("§cСлот §b%d §cиспользован дважды".formatted(slot));
@@ -77,17 +77,7 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
 
     public void addButtons(AbstractMenuButton button, int... slots) {
         for (int slot : slots) {
-            if (slot > inventory.getSize() - 1) {
-                log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
-                        .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
-            }
-            slot = inventory.getSize() - 1;
-
-            if (buttons.containsKey(slot)) {
-                log("§cСлот §b%d §cиспользован дважды".formatted(slot));
-            }
-
-            buttons.put(slot, button);
+            addButton(slot, button);
         }
     }
 
@@ -95,19 +85,14 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
         if (slot > inventory.getSize() - 1) {
             log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
                     .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+            slot = inventory.getSize() - 1;
         }
-        slot = inventory.getSize() - 1;
         buttons.put(slot, button);
     }
 
     public void addButtonsForced(AbstractMenuButton button, int... slots) {
         for (int slot : slots) {
-            if (slot > inventory.getSize() - 1) {
-                log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
-                        .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
-            }
-            slot = inventory.getSize() - 1;
-            buttons.put(slot, button);
+            addButtonForced(slot, button);
         }
     }
 
@@ -115,8 +100,9 @@ public abstract class AbstractMenu<T extends JavaPlugin> {
         if (slot > inventory.getSize() - 1) {
             log(("§cНомер слота §b%d §cне может быть больше размера инвенторя(§b%s§c)"
                     .formatted(slot, inventory.getSize()) + " §f| Установлено максимально возможное значение"));
+            slot = inventory.getSize() - 1;
         }
-        slot = inventory.getSize() - 1;
+
         editableSlots.add(slot);
     }
 
