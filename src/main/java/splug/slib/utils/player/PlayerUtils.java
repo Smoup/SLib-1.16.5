@@ -51,12 +51,26 @@ public class PlayerUtils {
     public static int getMaterialCountInInv(@NonNull Player player, Material material) {
         int count = 0;
 
-        for (ItemStack item : player.getInventory().getContents()) {
+        for (final ItemStack item : player.getInventory().getContents()) {
             if (item != null && item.getType().equals(material)) {
                 count += item.getAmount();
             }
         }
 
         return count;
+    }
+
+    public static void removeMaterialCountFromInv(@NonNull Player player, Material material, int count) {
+        for (final ItemStack item : player.getInventory().getContents()) {
+            if (item == null || !item.getType().equals(material)) continue;
+
+            if (item.getAmount() >= count) {
+                item.setAmount(item.getAmount() - count);
+                break;
+            } else {
+                count -= item.getAmount();
+                item.setAmount(0);
+            }
+        }
     }
 }
