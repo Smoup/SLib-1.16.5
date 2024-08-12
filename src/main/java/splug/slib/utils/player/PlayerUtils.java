@@ -3,6 +3,7 @@ package splug.slib.utils.player;
 import lombok.NonNull;
 import lombok.experimental.UtilityClass;
 import org.bukkit.Location;
+import org.bukkit.Material;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemStack;
 import org.bukkit.inventory.PlayerInventory;
@@ -45,5 +46,17 @@ public class PlayerUtils {
 
         player.setLevel(level);
         player.setExp(expProgress);
+    }
+
+    public static int getMaterialCountInInv(@NonNull Player player, Material material) {
+        int count = 0;
+
+        for (ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.getType().equals(material)) {
+                count += item.getAmount();
+            }
+        }
+
+        return count;
     }
 }
