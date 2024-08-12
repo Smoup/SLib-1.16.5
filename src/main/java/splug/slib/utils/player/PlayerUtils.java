@@ -20,32 +20,36 @@ public class PlayerUtils {
         notGiven.values().forEach(item -> loc.getWorld().dropItem(loc, item));
     }
 
-    public static void setPlayerTotalExperience(@NonNull Player player, int totalExp) {
-        player.setTotalExperience(totalExp);
+    public static void setPlayerTotalExperience(final @NonNull Player player, final int newExp) {
+        if (newExp < 0) throw new IllegalArgumentException("Количество опыта у игрока не должно быть меньше 0");
 
-        final int level;
-        final int expForNextLevel;
-        final float expProgress;
+        player.setExp(0);
+        player.setLevel(0);
+        player.setTotalExperience(0);
 
-        if (totalExp <= 352) {
-            level = (int) (Math.sqrt(totalExp + 9) - 3);
-            int expAtLevel = level * level + 6 * level;
-            expForNextLevel = 2 * level + 7;
-            expProgress = (float) (totalExp - expAtLevel) / expForNextLevel;
-        } else if (totalExp <= 1507) {
-            level = (int) ((81 / 10.0) + Math.sqrt(2.0 / 5 * (totalExp - 7839.0 / 40)));
-            int expAtLevel = (int) (2.5 * level * level - 40.5 * level + 360);
-            expForNextLevel = 5 * level - 38;
-            expProgress = (float) (totalExp - expAtLevel) / expForNextLevel;
-        } else {
-            level = (int) ((325 / 18.0) + Math.sqrt(2.0 / 9 * (totalExp - 54215.0 / 72)));
-            int expAtLevel = (int) (4.5 * level * level - 162.5 * level + 2220);
-            expForNextLevel = 9 * level - 158;
-            expProgress = (float) (totalExp - expAtLevel) / expForNextLevel;
+        int amount = newExp;
+        while (amount > 0) {
+            final int expToLevel = getExpAtLevel(player.getLevel());
+            amount -= expToLevel;
+            if (amount >= 0) {
+                player.giveExp(expToLevel);
+            } else {
+                amount += expToLevel;
+                player.giveExp(amount);
+                amount = 0;
+            }
+        }
+    }
+
+    public static int getExpAtLevel(final int level) {
+        if (level <= 15) {
+            return (2 * level) + 7;
         }
 
-        player.setLevel(level);
-        player.setExp(expProgress);
+        if (level <= 30) {
+            return (5 * level) - 38;
+        }
+        return (9 * level) - 158;
     }
 
     public static int getMaterialCountInInv(@NonNull Player player, Material material) {
