@@ -77,4 +77,11 @@ public class PlayerUtils {
             }
         }
     }
+
+    public static boolean hasItemInInventory(Player player, ItemStack itemStack) {
+        for (final ItemStack item : player.getInventory().getContents()) {
+            if (item != null && item.isSimilar(itemStack)) return true;
+        }
+        return false;
+    }
 }
