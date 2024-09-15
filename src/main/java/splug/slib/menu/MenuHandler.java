@@ -2,6 +2,7 @@ package splug.slib.menu;
 
 import lombok.Data;
 import org.bukkit.Bukkit;
+import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
 import org.bukkit.event.Listener;
 import org.bukkit.event.inventory.InventoryClickEvent;
@@ -93,5 +94,14 @@ public class MenuHandler implements Listener {
     public <P extends JavaPlugin, T extends CommandData> void handleTabCompleter
             (AbstractArgumentContent<P,T> content) {
         content.setArgs(menusByName.keySet());
+    }
+
+    public boolean openIfExists(String menuKey, Player player) {
+        if (menusByName.containsKey(menuKey)) {
+            menusByName.get(menuKey).openMenu(player);
+            return true;
+        } else {
+            return false;
+        }
     }
 }
